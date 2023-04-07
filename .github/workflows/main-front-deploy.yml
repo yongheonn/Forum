@@ -16,13 +16,8 @@ jobs:
       - name: Checkout source code
         uses: actions/checkout@master
         
-      - name: Create api_url.tsx  
-      - run: touch ./src/Modules/api_url.tsx
-        working-directory: ${{ env.working-directory }}
-      - run: echo "${{ secrets.API_URL }}" > ./src/Modules/api_url.tsx
-        working-directory: ${{ env.working-directory }}
-      - run: cat ./src/Modules/api_url.tsx
-        working-directory: ${{ env.working-directory }}
+      - name: Move api_url.tsx to Modules folder  
+      - run:  mv ./lib/api_url.tsx ./front-end/Modules/api_url.tsx
 
       - name: Cache node modules  # node modules 캐싱
         uses: actions/cache@v1
