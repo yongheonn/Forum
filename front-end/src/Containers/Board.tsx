@@ -1,6 +1,6 @@
 import React, { ChangeEvent, FormEvent, Fragment, useContext, useEffect, useRef, useState } from 'react';
 import { AiFillLock } from 'react-icons/ai';
-import { Link, Route, Routes, useParams, useSearchParams } from 'react-router-dom';
+import { Link, Route, Routes, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { HorizontalPanel, VerticalPanel } from '../Components/Panel';
 import { AjaxGetOption, AjaxPostOption } from '../Modules/api_option';
