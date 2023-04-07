@@ -20,7 +20,7 @@ jobs:
           token: ${{ secrets.ACTION_TOKEN }}
         
       - name: Move api_url.tsx to Modules folder  
-      - run: mv ./lib/api_url.tsx ./front-end/Modules/api_url.tsx
+        run: mv ./lib/api_url.tsx ./front-end/Modules/api_url.tsx
 
       - name: Cache node modules  # node modules 캐싱
         uses: actions/cache@v1
