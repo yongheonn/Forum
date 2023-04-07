@@ -1,7 +1,7 @@
 import React, { createContext, Dispatch, Fragment, SetStateAction, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { AiFillLock } from 'react-icons/ai';
-import { Link, LinkProps, Route, Routes, useParams, useSearchParams } from 'react-router-dom';
+import { Link, Route, Routes, useParams, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { AjaxGetOption } from '../Modules/api_option';
 import { HorizontalPanel, VerticalPanel } from '../Components/Panel';
