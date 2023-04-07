@@ -1,0 +1,16 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: url #fix
+    username: username #fix
+    password: password #fix
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+    defer-datasource-initialization: true
+
+mybatis:
+  type-aliases-package: com.yongheon.backend.DTO
+  mapper-locations: classpath:/mybatis/mapper/*.xml

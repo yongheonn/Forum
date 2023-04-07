@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yongheon.backend.Web.DAO.UserDAO">
+	
+	<select id="getEmail" resultType="String">
+		select email from user where id = #{id}
+	</select>
+
+	<select id="getAuth" resultType="Integer">
+		select auth from user where id = #{id}
+	</select>
+
+	<select id="getUser" resultType="com.yongheon.backend.Web.DTO.UserDTO">
+		select id, nick, email, auth from user where id = #{id}
+	</select>
+
+	<select id="getNickList" resultType="String">
+		select nick from user where id in #{id}
+	</select>
+
+	<select id="getNick" resultType="String">
+		select nick from user where id = #{id}
+	</select>
+
+	<select id="verifyUser" resultType="Integer">
+		update user set auth=2 where id=#{id}
+	</select>
+</mapper>

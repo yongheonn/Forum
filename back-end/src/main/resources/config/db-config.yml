@@ -1,0 +1,30 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: url #fix
+    user: id #fix
+    password: password #fix
+
+  redis:
+    host: host #fix
+    port: port #fix
+
+  mail:
+    host: smtp.gmail.com #fix
+    port: port #fix
+    username: username #fix
+    password: password #fix
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+mybatis:
+  type-aliases-package: package #fix
+  mapper-locations: classpath:/mybatis/mapper/*.xml
+
+server:
+  address: address #fix
+  server.port: port #fix

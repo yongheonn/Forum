@@ -1,0 +1,50 @@
+name: main-front-deploy
+
+on:
+  push:
+    paths:
+      - "front-end/**"
+    branches:
+      - main    # main 브랜치에서 push 이벤트가 일어났을 때 실행
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    env:
+          working-directory: ./front-end
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@master
+        
+      - name: Create api_url.tsx  
+      - run: touch ./src/Modules/api_url.tsx
+        working-directory: ${{ env.working-directory }}
+      - run: echo "${{ secrets.API_URL }}" > ./src/Modules/api_url.tsx
+        working-directory: ${{ env.working-directory }}
+      - run: cat ./src/Modules/api_url.tsx
+        working-directory: ${{ env.working-directory }}
+
+      - name: Cache node modules  # node modules 캐싱
+        uses: actions/cache@v1
+        with:
+          path: node_modules
+          key: ${{ runner.OS }}-master-build-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.OS }}-build-
+            ${{ runner.OS }}-
+
+      - name: Install Dependencies # node module install
+        run: yarn
+        working-directory: ${{ env.working-directory }}
+
+      - name: Build # project build
+        run: CI=false yarn build
+        working-directory: ${{ env.working-directory }}
+
+      - name: Deploy 
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_YONGHEONN_ACCESS_KEY }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_YONGHEONN_SECRET_KEY }}
+          AWS_DEFAULT_REGION: ap-northeast-2
+        run: |
+          aws s3 sync front-end/build s3://yongheonn.com

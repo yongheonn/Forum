@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yongheon.backend.Web.DAO.SubjectDAO">
+
+	<insert id="createSubject">
+	 	INSERT INTO 
+	 	subject(
+			id,
+	 		title,
+			description,
+			admin
+	 	) 
+	 	VALUES(
+			#{id},
+	 		#{title},
+	 		#{description},
+	 		#{admin},
+	 	) 
+	</insert>
+
+	<select id="getSubject" resultType="com.yongheon.backend.Web.DTO.SubjectDTO">
+		select id, title, description, admin
+		from subject 
+		where id=#{id}
+	</select>
+
+	<select id="getSubjectAll" resultType="com.yongheon.backend.Web.DTO.SubjectDTO">
+		select id, title, admin, description from subject
+	</select>
+
+	<select id="getSubjectList" resultType="com.yongheon.backend.Web.DTO.SubjectDTO">
+		select id, title, admin, description from subject
+	</select>
+
+	<select id="getBoardTotal" resultType="int">
+		select btotal
+		from subject
+		where id = #{id}
+	</select>
+
+	<update id="updateBoardTotal">
+		update subject set btotal = #{btotal}
+		where id = #{id};
+	</update>
+</mapper>

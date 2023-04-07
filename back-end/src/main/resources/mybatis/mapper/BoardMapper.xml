@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yongheon.backend.Web.DAO.BoardDAO">
+
+	<insert id="insertBoard">
+	INSERT INTO 
+	 	board(
+			sid,
+			s_bno,
+			user_id,
+			writer,
+			title,
+			content,
+			pw
+	 	) 
+	 	values(
+			#{sid},
+			#{s_bno},
+			#{user_id},
+			#{writer},
+			#{title},
+			#{content},
+			#{pw}
+		)
+	</insert>
+
+	<select id="getBNO" resultType="int">
+		select bno 
+		from board
+		where sid = #{sid} and s_bno = #{s_bno}
+	</select>
+
+	<select id="getBoardTotal" resultType="int">
+		select ifnull(max(s_bno), 0)
+		from board
+		where sid = #{sid}
+	</select>
+
+	<select id="getBoardPage" resultType="com.yongheon.backend.Web.DTO.BoardDTO">
+		select bno, s_bno, writer, title, view, recommend, reg_date, pw
+		from board
+		where sid=#{sid} and s_bno >= #{btotal} - #{page} * 30 + 1 and deleted = 0
+		limit 30
+	</select>
+
+	<select id="getBoard" resultType="com.yongheon.backend.Web.DTO.BoardDTO">
+		select user_id, writer, title, content, view, recommend, reg_date, update_date, pw, deleted
+		from board
+		where bno=#{bno}
+	</select>
+
+	<update id="updateView">
+		update board set view = view + 1 
+		where bno = #{bno};
+	</update>
+
+	<update id="updateBoard">
+		update board set title = #{title}, content = #{content}, pw=#{pw} 
+		where bno = #{bno};
+	</update>
+
+	<update id="deleteBoard">
+		update board set deleted = 1 
+		where bno = #{bno};
+	</update>
+
+	<update id="updateRecommendNum">
+		update board set recommend = recommend + 1 
+		where bno = #{bno};
+	</update>
+ </mapper>
