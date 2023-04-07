@@ -7,7 +7,6 @@ import { AjaxGetOption, AjaxPostOption } from '../Modules/api_option';
 import { AppContext } from './App';
 import { DeleteBoard } from './DeleteBoard';
 import { ErrorPage } from './ErrorPage';
-import { Main } from './Main';
 import { refreshAccessToken } from './RefreshToken';
 import { SubjectContext } from './Subject';
 import { UpdateBoard } from './WriteBoard';
