@@ -4,7 +4,6 @@ import { AiFillLock } from 'react-icons/ai';
 import { Link, LinkProps, Route, Routes, useParams, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { AjaxGetOption } from '../Modules/api_option';
-import langList from '../lang/langList';
 import { HorizontalPanel, VerticalPanel } from '../Components/Panel';
 import '../styles/BoardList.css';
 import { refreshAccessToken } from './RefreshToken';
