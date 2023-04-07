@@ -2,7 +2,7 @@ import React, { createContext, Dispatch, Fragment, SetStateAction, useEffect, us
 import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
 import { AiOutlineSetting } from 'react-icons/ai';
-import { Link, matchPath, Route, Routes, useParams } from 'react-router-dom';
+import { matchPath, Route, Routes, useParams } from 'react-router-dom';
 import '../styles/App.css';
 import { Subject } from './Subject';
 import Setting from './Setting';
