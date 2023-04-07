@@ -4,7 +4,6 @@ import { useTranslation } from 'react-i18next';
 import { AiOutlineSetting } from 'react-icons/ai';
 import { Link, matchPath, Route, Routes, useParams } from 'react-router-dom';
 import '../styles/App.css';
-import AccountMenu from './AccountMenu';
 import { Subject } from './Subject';
 import Setting from './Setting';
 import TopPannel from './TopPannel';
