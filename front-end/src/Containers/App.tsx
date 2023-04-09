@@ -1,7 +1,6 @@
 import React, { createContext, Dispatch, Fragment, SetStateAction, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
-import { AiOutlineSetting } from 'react-icons/ai';
 import { matchPath, Route, Routes, useParams } from 'react-router-dom';
 import '../styles/App.css';
 import { Subject } from './Subject';
