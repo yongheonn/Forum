@@ -49,7 +49,7 @@ const LoginForm = () => {
   const getToken = async () => {
     const response = await fetch(url, option);
     if (response.status === 200) {
-      const accessToken = response.headers.get('Authorization');
+      const accessToken = response.headers.get('authorization');
       const data: UserData = (await response.json()) as UserData;
       if (typeof accessToken === 'string') localStorage.setItem('access_token', accessToken);
       localStorage.setItem('id', data.id);
