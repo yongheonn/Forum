@@ -16,8 +16,8 @@ public class SubjectServiceImpl implements SubjectService {
     SubjectDAO subjectDAO;
 
     @Override
-    public void createSubject(String id, String title, String description, String admin) throws Exception {
-        subjectDAO.createSubject(new SubjectDTO(id, title, description, admin));
+    public void createSubject(SubjectDTO subjectDTO) throws Exception {
+        subjectDAO.createSubject(subjectDTO);
     }
 
     @Override
@@ -28,5 +28,15 @@ public class SubjectServiceImpl implements SubjectService {
     @Override
     public ArrayList<SubjectDTO> getSubjectAll() {
         return subjectDAO.getSubjectAll();
+    }
+
+    @Override
+    public String getAdmin(String id) {
+        return subjectDAO.getAdmin(id);
+    }
+
+    @Override
+    public void updateSubject(SubjectDTO subjectDTO) {
+        subjectDAO.updateSubject(subjectDTO);
     }
 }

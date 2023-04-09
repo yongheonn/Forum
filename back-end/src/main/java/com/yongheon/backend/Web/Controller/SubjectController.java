@@ -6,6 +6,7 @@ import javax.inject.Inject;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,11 +26,18 @@ public class SubjectController {
     SubjectService subjectService;
 
     @PostMapping("/regi")
-    public ResponseEntity<?> regiSubject(@RequestBody SubjectDTO data) {
+    public ResponseEntity<?> regiSubject(@AuthenticationPrincipal String id, @RequestBody SubjectDTO subject) {
         try {
-            String id = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            data.setAdmin(id);
-            return new ResponseEntity<>(HttpStatus.OK);
+            String auth = SecurityContextHolder.getContext().getAuthentication()
+                    .getAuthorities().toArray()[0].toString();
+            System.out.println("주제: " + subject);
+            if (!auth.equals("ROLE_ADMIN")) // 관리자 권한이 있거나 본인 아이디가 아닌 관리자를 부여한 경우가 아닐 때
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+
+            subjectService.createSubject(subject);
+            String jsonData = new GsonBuilder().serializeNulls().create().toJson(subject.getId());
+
+            return new ResponseEntity<>(jsonData, HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -61,9 +69,15 @@ public class SubjectController {
     }
 
     @PostMapping("/update")
-    public ResponseEntity<?> updateSubject(@RequestParam String subject) {
+    public ResponseEntity<?> updateSubject(@AuthenticationPrincipal String id, @RequestBody SubjectDTO subject) {
         try {
-
+            String auth = SecurityContextHolder.getContext().getAuthentication()
+                    .getAuthorities().toArray()[0].toString();
+            if (!auth.equals("ROLE_ADMIN") && !subjectService.getAdmin(subject.getId()).equals(id)) // 관리자 권한이 있거나 작성자인
+                                                                                                    // 경우가 아닐 때
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            subjectService.updateSubject(subject);
+            System.out.println("업데이트 주제: " + subject);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();

@@ -16,7 +16,7 @@
 			#{id},
 	 		#{title},
 	 		#{description},
-	 		#{admin},
+	 		#{admin}
 	 	) 
 	</insert>
 
@@ -40,8 +40,21 @@
 		where id = #{id}
 	</select>
 
+	<select id="getAdmin" resultType="String">
+		select admin
+		from subject
+		where id = #{id}
+	</select>
+
 	<update id="updateBoardTotal">
 		update subject set btotal = #{btotal}
+		where id = #{id};
+	</update>
+
+	<update id="updateSubject">
+		update subject set title= #{title},
+			description= #{description},
+			admin= #{admin}
 		where id = #{id};
 	</update>
 </mapper>

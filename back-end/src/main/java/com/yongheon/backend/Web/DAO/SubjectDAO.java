@@ -19,5 +19,9 @@ public interface SubjectDAO {
 
     public int getBoardTotal(String id);
 
+    public String getAdmin(String id);
+
     public void updateBoardTotal(SubjectDTO dto);
+
+    public void updateSubject(SubjectDTO dto);
 }

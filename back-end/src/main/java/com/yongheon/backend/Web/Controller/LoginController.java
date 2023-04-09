@@ -39,16 +39,14 @@ public class LoginController {
 		try {
 			Status status = loginService.login(data);
 			if (status == Status.FAIL) {
-				response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
-				return null;
+				return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 			}
 			if (status == Status.ERROR)
 				throw new Error();
 
 			String auth = userService.getAuth(data.getId());
 			if (auth == null) {
-				response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-				return null;
+				return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 			}
 			String accessToken = jwtTokenProvider.generateAccessToken(data.getId(), auth);
 			response.setHeader("Authorization", accessToken);
@@ -81,8 +79,7 @@ public class LoginController {
 			return new ResponseEntity<>(jsonData, HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();
-			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-			return null;
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 }
