@@ -50,7 +50,7 @@ const LoginForm = () => {
     const response = await fetch(url, option);
     if (response.status === 200) {
       const data: UserData = (await response.json()) as UserData;
-      const accessToken = response.headers.get('authorization');
+      const accessToken = response.headers.get('Authorization');
       if (accessToken !== null) localStorage.setItem('access_token', accessToken);
       localStorage.setItem('id', data.id);
       localStorage.setItem('nick', data.nick);
