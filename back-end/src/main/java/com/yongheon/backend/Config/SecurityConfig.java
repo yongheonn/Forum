@@ -34,7 +34,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .cors() // (1)
+                .cors().configurationSource(corsConfigurationSource()) // (1)
                 .and()
                 .csrf() // (2)
                 .disable()
@@ -57,7 +57,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.addAllowedOriginPattern("*");
+        configuration.addAllowedOrigin("https://www.yongheonn.com");
+        configuration.addAllowedOrigin("https://yongheonn.com");
         configuration.setAllowedMethods(Arrays.asList("HEAD", "GET", "POST"));
         configuration.addAllowedHeader("*");
         configuration.setAllowCredentials(true);
