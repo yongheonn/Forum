@@ -22,14 +22,22 @@ jobs:
     runs-on: ubuntu-latest
     environment: production
     
-    defaults:
-      run:
-        working-directory: ./back-end
+    env:
+      working-directory: ./back-end
         
     steps:
     # 기본 체크아웃
     - name: Checkout
       uses: actions/checkout@v3
+      with:
+          submodules: recursive
+          token: ${{ secrets.ACTION_TOKEN }}
+    
+    - name: Move application.yml to resources folder  
+      run: mv ./lib/application.yml ./back-end/src/main/resources/application.yml
+      
+    - name: Move application.properties to resources folder   
+      run: mv ./lib/application.properties ./back-end/src/main/resources/application.properties
 
     # JDK 11 세팅
     - name: Set up JDK 17
@@ -40,9 +48,11 @@ jobs:
         
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
+      working-directory: ${{ env.working-directory }}
         
     - name: Build with Gradle
       run: ./gradlew clean build -x test
+      working-directory: ${{ env.working-directory }}
 
     # AWS 인증 (IAM 사용자 Access Key, Secret Key 활용)
     - name: Configure AWS credentials
@@ -54,6 +64,7 @@ jobs:
         
     - name: Make zip file
       run: zip -r ./$GITHUB_SHA.zip .
+      working-directory: ${{ env.working-directory }}
 
     # 빌드 결과물을 S3 버킷에 업로드
     - name: Upload to AWS S3
@@ -63,6 +74,7 @@ jobs:
           --ignore-hidden-files \
           --s3-location s3://$S3_BUCKET_NAME/$GITHUB_SHA.zip \
           --source .
+      working-directory: ${{ env.working-directory }}
 
     # S3 버킷에 있는 파일을 대상으로 CodeDeploy 실행
     - name: Deploy to AWS EC2 from S3
@@ -72,3 +84,4 @@ jobs:
           --deployment-config-name CodeDeployDefault.AllAtOnce \
           --deployment-group-name ${{ env.CODE_DEPLOY_DEPLOYMENT_GROUP_NAME }} \
           --s3-location bucket=$S3_BUCKET_NAME,key=$GITHUB_SHA.zip,bundleType=zip
+      working-directory: ${{ env.working-directory }}
