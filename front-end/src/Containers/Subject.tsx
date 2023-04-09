@@ -1,4 +1,4 @@
-import React, { createContext, Dispatch, Fragment, SetStateAction, useEffect, useState } from 'react';
+import React, { createContext, Dispatch, Fragment, SetStateAction, useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { AiFillLock } from 'react-icons/ai';
 import { Link, Route, Routes, useParams, useSearchParams } from 'react-router-dom';
@@ -10,6 +10,8 @@ import { refreshAccessToken } from './RefreshToken';
 import { Board } from './Board';
 import { CreateBoard } from './WriteBoard';
 import { apiUrl } from '../Modules/api_url';
+import { UpdateSubject } from './CreateSubject';
+import { MainContext } from './Main';
 
 type BoardT = {
   bno: number; // 게시물 번호
@@ -101,42 +103,8 @@ const SubjectLink = styled(Link)`
   text-decoration: none;
 `;
 
-const SubjectInfo = ({ sid }: { sid: string }) => {
-  const urlBase = apiUrl + '/ajax/subject/get';
-
-  const option: AjaxGetOption = {
-    method: 'GET',
-    'Access-Control-Expose-Headers': '*, Authorization',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-      Authorization: '',
-    },
-  };
-
-  const [subject, setSubject] = useState<SubjectT>({} as SubjectT);
-
-  const getSubject = async () => {
-    const accessToken = localStorage.getItem('access_token');
-    if (accessToken) option.headers.Authorization = accessToken;
-    const url = urlBase + '?sid=' + sid;
-    const response = await fetch(url, option);
-
-    if (response.status === 200) {
-      const tempSubject: SubjectT = (await response.json()) as SubjectT;
-      setSubject(tempSubject);
-    } else if (response.status === 303) {
-      refreshAccessToken(getSubject)
-        .then(() => null)
-        .catch(() => null);
-    }
-  };
-
-  useEffect(() => {
-    getSubject()
-      .then(() => null)
-      .catch(() => null);
-  }, []);
+const SubjectInfo = ({ subject }: { subject: SubjectT }) => {
+  const a = 1;
 
   return (
     <Fragment>
@@ -214,7 +182,7 @@ const BoardFooter = styled(HorizontalPanel)`
   margin-top: 12px;
 `;
 
-const BoardList = ({ sid, page }: { sid: string; page: string }) => {
+const BoardList = ({ subject, page }: { subject: SubjectT; page: string }) => {
   const urlBase = apiUrl + '/ajax/board/list';
 
   const option: AjaxGetOption = {
@@ -232,7 +200,7 @@ const BoardList = ({ sid, page }: { sid: string; page: string }) => {
   const getBoardList = async () => {
     const accessToken = localStorage.getItem('access_token');
     if (accessToken) option.headers.Authorization = accessToken;
-    const url = urlBase + '?sid=' + sid + '&page=' + page;
+    const url = urlBase + '?sid=' + subject.id + '&page=' + page;
     const response = await fetch(url, option);
 
     if (response.status === 200) {
@@ -273,43 +241,71 @@ const BoardList = ({ sid, page }: { sid: string; page: string }) => {
           </BoardLink>
         ))}
         <BoardFooter>
-          <WriteLink to={'/board/' + sid + '/write'}>글쓰기</WriteLink>
+          <WriteLink to={'/board/' + subject.id + '/create'}>글쓰기</WriteLink>
+          {localStorage.getItem('id') === subject.id || localStorage.getItem('auth') === 'ROLE_ADMIN' ? (
+            <WriteLink to={'/board/' + subject.id + '/update'}>주제 수정</WriteLink>
+          ) : null}
         </BoardFooter>
       </VerticalPanel>
     </Fragment>
   );
 };
 
-export const SubjectContext = createContext<{
-  refreshBoard: number;
-  setRefreshBoard: Dispatch<SetStateAction<number>>;
-  refreshBoardList: number;
-  setRefreshBoardList: Dispatch<SetStateAction<number>>;
-}>(
-  {} as {
-    refreshBoard: number;
-    setRefreshBoard: Dispatch<SetStateAction<number>>;
-    refreshBoardList: number;
-    setRefreshBoardList: Dispatch<SetStateAction<number>>;
-  }
-);
-
 const Subject = () => {
   const { sid } = useParams();
   const [searchParams, setSearchParams] = useSearchParams();
-  const [refreshBoard, setRefreshBoard] = useState<number>(1);
-  const [refreshBoardList, setRefreshBoardList] = useState<number>(1);
+
+  const { refreshSubject } = useContext(MainContext);
+  const [delay, setDelay] = useState(false);
+
+  const urlBase = apiUrl + '/ajax/subject/get';
+
+  const option: AjaxGetOption = {
+    method: 'GET',
+    'Access-Control-Expose-Headers': '*, Authorization',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: '',
+    },
+  };
+
+  const [subject, setSubject] = useState<SubjectT>({} as SubjectT);
+
+  const getSubject = async () => {
+    const accessToken = localStorage.getItem('access_token');
+    if (accessToken) option.headers.Authorization = accessToken;
+    const url = urlBase + '?sid=' + (sid as string);
+    const response = await fetch(url, option);
+
+    if (response.status === 200) {
+      const tempSubject: SubjectT = (await response.json()) as SubjectT;
+      setSubject(tempSubject);
+      setDelay(true);
+    } else if (response.status === 303) {
+      refreshAccessToken(getSubject)
+        .then(() => null)
+        .catch(() => null);
+    }
+  };
+
+  useEffect(() => {
+    getSubject()
+      .then(() => null)
+      .catch(() => null);
+  }, [refreshSubject]);
 
   return (
     <Fragment>
-      <SubjectInfo sid={sid!} />
-      <SubjectContext.Provider value={{ refreshBoard, setRefreshBoard, refreshBoardList, setRefreshBoardList }}>
-        <Routes>
-          <Route path="" element={<BoardList sid={sid as string} page={searchParams.get('page') ?? '1'} />} />
-          <Route path="write" element={<CreateBoard sid={sid as string} />} />
-          <Route path=":bno/*" element={<Board />} />
-        </Routes>
-      </SubjectContext.Provider>
+      {delay ? <SubjectInfo subject={subject} /> : null}
+      <Routes>
+        {delay ? (
+          <Route path="" element={<BoardList subject={subject} page={searchParams.get('page') ?? '1'} />} />
+        ) : null}
+        <Route path="create" element={<CreateBoard sid={sid as string} />} />
+        {delay ? <Route path="update" element={<UpdateSubject subject={subject} />} /> : null}
+        <Route path=":bno/*" element={<Board />} />
+      </Routes>
     </Fragment>
   );
 };

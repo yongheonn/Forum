@@ -5,7 +5,7 @@ import ModalPopup from '../Components/ModalPopup';
 import { HorizontalPanel } from '../Components/Panel';
 import { AjaxPostOption } from '../Modules/api_option';
 import { refreshAccessToken } from './RefreshToken';
-import { SubjectContext } from './Subject';
+import { MainContext } from './Main';
 import { apiUrl } from '../Modules/api_url';
 
 const DeletePopup = styled(ModalPopup)`
@@ -25,7 +25,7 @@ const DeleteBoard = ({
 }) => {
   const url = apiUrl + '/ajax/board/delete';
   const navigate = useNavigate();
-  const { refreshBoardList, setRefreshBoardList } = useContext(SubjectContext);
+  const { refreshBoardList, setRefreshBoardList } = useContext(MainContext);
 
   const option: AjaxPostOption = {
     method: 'POST',

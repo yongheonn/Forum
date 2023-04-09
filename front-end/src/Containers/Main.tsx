@@ -1,11 +1,13 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Dispatch, Fragment, SetStateAction, createContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router-dom';
+import { Link, Route, Routes } from 'react-router-dom';
 import styled from 'styled-components';
-import { VerticalPanel } from '../Components/Panel';
+import { HorizontalPanel, VerticalPanel } from '../Components/Panel';
 import { AjaxGetOption } from '../Modules/api_option';
 import { refreshAccessToken } from './RefreshToken';
 import { apiUrl } from '../Modules/api_url';
+import { CreateSubject } from './CreateSubject';
+import { Subject } from './Subject';
 
 type SubjectT = {
   id: string;
@@ -80,6 +82,27 @@ const SubjectIntro = ({ subject }: { subject: SubjectT }) => {
   );
 };
 
+const WriteLink = styled(Link)`
+  &:link {
+    color: #000000;
+  }
+  &:visited {
+    color: #000000;
+  }
+  text-decoration: none;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #bbb;
+  padding: 5px;
+  margin-left: auto;
+  float: right;
+`;
+
+const SubjectFooter = styled(HorizontalPanel)`
+  padding: 8px;
+  margin-top: 12px;
+`;
+
 const SubjectList = () => {
   const url = apiUrl + '/ajax/subject/all';
 
@@ -123,16 +146,55 @@ const SubjectList = () => {
             <SubjectIntro subject={subject} />
           </SubjectLink>
         ))}
+        {localStorage.getItem('auth') === 'ROLE_ADMIN' ? (
+          <SubjectFooter>
+            <WriteLink to={'/create'}>주제 생성</WriteLink>
+          </SubjectFooter>
+        ) : null}
       </VerticalPanel>
     </Fragment>
   );
 };
 
+export const MainContext = createContext<{
+  refreshSubject: number;
+  setRefreshSubject: Dispatch<SetStateAction<number>>;
+  refreshBoard: number;
+  setRefreshBoard: Dispatch<SetStateAction<number>>;
+  refreshBoardList: number;
+  setRefreshBoardList: Dispatch<SetStateAction<number>>;
+}>(
+  {} as {
+    refreshSubject: number;
+    setRefreshSubject: Dispatch<SetStateAction<number>>;
+    refreshBoard: number;
+    setRefreshBoard: Dispatch<SetStateAction<number>>;
+    refreshBoardList: number;
+    setRefreshBoardList: Dispatch<SetStateAction<number>>;
+  }
+);
+
 const Main = () => {
-  let i;
+  const [refreshSubject, setRefreshSubject] = useState<number>(1);
+  const [refreshBoard, setRefreshBoard] = useState<number>(1);
+  const [refreshBoardList, setRefreshBoardList] = useState<number>(1);
   return (
     <Fragment>
-      <SubjectList></SubjectList>
+      <MainContext.Provider
+        value={{
+          refreshBoard,
+          setRefreshBoard,
+          refreshBoardList,
+          setRefreshBoardList,
+          refreshSubject,
+          setRefreshSubject,
+        }}>
+        <Routes>
+          <Route path="" element={<SubjectList />} />
+          <Route path="/create" element={<CreateSubject />} />
+          <Route path="/board/:sid/*" element={<Subject />} />
+        </Routes>
+      </MainContext.Provider>
     </Fragment>
   );
 };

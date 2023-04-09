@@ -11,6 +11,7 @@ import { VerifyAuthLink } from './WaitEmailAuth';
 import { Main } from './Main';
 import { SetLangDefault } from './LangSetting';
 import BottomPanel from './BottomPanel';
+import { CreateSubject } from './CreateSubject';
 
 const deleteConsole = () => {
   if (process.env.NODE_ENV === 'production') {
@@ -73,11 +74,9 @@ const App: React.FC = () => {
             ErrorPage를 여기에 구현 예정 아래 
             */}
             <Routes>
-              <Route path="/" element={<Main />} />
+              <Route path="/*" element={<Main />} />
               <Route path="/setting/*" element={<Setting />} />
               <Route path="/auth/email/*" element={<VerifyAuthLink />} />
-
-              <Route path="/board/:sid/*" element={<Subject />} />
             </Routes>
           </AppContext.Provider>
         </MainArticle>

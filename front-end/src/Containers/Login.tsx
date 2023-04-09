@@ -50,7 +50,17 @@ const LoginForm = () => {
     const response = await fetch(url, option);
     if (response.status === 200) {
       const accessToken = response.headers.get('Authorization');
+      const data: UserData = (await response.json()) as UserData;
       if (typeof accessToken === 'string') localStorage.setItem('access_token', accessToken);
+      localStorage.setItem('id', data.id);
+      localStorage.setItem('nick', data.nick);
+      localStorage.setItem('email', data.email);
+      let auth = '';
+      if (data.auth === 0) auth = 'ROLE_GUEST';
+      else if (data.auth === 1) auth = 'ROLE_USER_NONCERT';
+      else if (data.auth === 2) auth = 'ROLE_USER_CERT';
+      else if (data.auth === 3) auth = 'ROLE_ADMIN';
+      localStorage.setItem('auth', auth);
     } else if (response.status === 404) {
       return '아이디 또는 비밀번호를 잘못 입력했습니다. 입력한 내용을 다시 확인해주세요.';
     } else {

@@ -8,9 +8,9 @@ import { AppContext } from './App';
 import { DeleteBoard } from './DeleteBoard';
 import { ErrorPage } from './ErrorPage';
 import { refreshAccessToken } from './RefreshToken';
-import { SubjectContext } from './Subject';
 import { UpdateBoard } from './WriteBoard';
 import { apiUrl } from '../Modules/api_url';
+import { MainContext } from './Main';
 
 type BoardT = {
   bno: number; // 게시물 번호
@@ -357,7 +357,7 @@ const Board = () => {
   const { bno } = useParams();
   const [error, setError] = useState(0);
   const urlBase = apiUrl + '/ajax/board/read';
-  const { refreshBoard } = useContext(SubjectContext);
+  const { refreshBoard } = useContext(MainContext);
   const [isDeleteClick, setDeleteClick] = useState(false);
 
   const option: AjaxGetOption = {

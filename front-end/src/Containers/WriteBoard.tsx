@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { HorizontalPanel } from '../Components/Panel';
 import { AjaxPostOption } from '../Modules/api_option';
 import { refreshAccessToken } from './RefreshToken';
-import { SubjectContext } from './Subject';
+import { MainContext } from './Main';
 import { apiUrl } from '../Modules/api_url';
 
 type BoardT = {
@@ -67,7 +67,7 @@ const CreateBoard = ({ sid }: { sid: string }) => {
   const url = apiUrl + '/ajax/board/create';
   const location = useLocation();
   const navigate = useNavigate();
-  const { refreshBoard, setRefreshBoard } = useContext(SubjectContext); // board 새로고침을 위한
+  const { refreshBoard, setRefreshBoard } = useContext(MainContext); // board 새로고침을 위한
 
   const [boardInput, setBoardInput] = useState<{ title: string; content: string; pw: string | null }>({
     title: '',
@@ -113,7 +113,7 @@ const CreateBoard = ({ sid }: { sid: string }) => {
 const UpdateBoard = ({ board, bno }: { board: BoardT; bno: string }) => {
   const url = apiUrl + '/ajax/board/update';
   const navigate = useNavigate();
-  const { refreshBoard, setRefreshBoard } = useContext(SubjectContext); // board 새로고침을 위한
+  const { refreshBoard, setRefreshBoard } = useContext(MainContext); // board 새로고침을 위한
   const [boardInput, setBoardInput] = useState<{ title: string; content: string; pw: string | null }>({
     title: board.title,
     content: board.content,
@@ -139,6 +139,7 @@ const UpdateBoard = ({ board, bno }: { board: BoardT; bno: string }) => {
     if (response.status === 200) {
       console.log('성공');
       setRefreshBoard(refreshBoard * -1); // 상태 변화를 통한 새로고침
+      console.log('성공2');
       navigate('../');
     } else if (response.status === 303) {
       refreshAccessToken(updateBoard)
