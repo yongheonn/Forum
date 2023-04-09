@@ -1,9 +1,6 @@
 package com.yongheon.backend.Web.Service;
 
-import java.util.ArrayList;
-
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.GrantedAuthority;
 
 import com.yongheon.backend.Web.DTO.BoardDTO;
 
