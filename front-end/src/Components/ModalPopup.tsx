@@ -31,6 +31,7 @@ const ModalBlock = styled.div`
   }
   min-height: 35rem;
   animation: modal-show 0.1s;
+  padding: 10px;
   }
 `;
 
@@ -55,6 +56,7 @@ const Contents = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding: 10px;
 `;
 
 type ChartProps = {

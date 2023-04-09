@@ -1,9 +1,16 @@
 import React, { Fragment, useEffect } from 'react';
+import styled from 'styled-components';
 import Loading from '../Components/Loading';
 import useInterval from '../Components/UseInterval';
 import ModalPopup from '../Components/ModalPopup';
 import { AjaxGetOption } from '../Modules/api_option';
 import { apiUrl } from '../Modules/api_url';
+import { VerticalPanel } from '../Components/Panel';
+
+const LoadingPannel = styled(VerticalPanel)`
+  color: black;
+  margin-top: 100px;
+`;
 
 const VerifyAuthLink = () => {
   let url = apiUrl + '/ajax/auth/email/verify?';
@@ -74,9 +81,11 @@ const LoadAuthState = () => {
   }, 5000);
 
   return (
-    <Fragment>
-      <Loading />
-    </Fragment>
+    <LoadingPannel>
+      <Loading height={'100px'} width={'100px'} />
+      <br />
+      <span>이메일 인증을 대기중입니다</span>
+    </LoadingPannel>
   );
 };
 
