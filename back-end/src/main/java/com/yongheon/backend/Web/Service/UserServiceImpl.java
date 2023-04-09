@@ -5,6 +5,7 @@ import java.util.UUID;
 import javax.inject.Inject;
 
 import org.apache.ibatis.javassist.NotFoundException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,9 @@ public class UserServiceImpl implements UserService {
 
     @Inject
     private JavaMailSender emailSender;
+
+    @Value("${front-url}")
+    private String front_url;
 
     @Override
     public String getEmail(String id) {
@@ -97,6 +101,7 @@ public class UserServiceImpl implements UserService {
     public void sendMail(String to, String sub, String text) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(to);
+        message.setFrom("helper@yongheonn.com");
         message.setSubject(sub);
         message.setText(text);
         emailSender.send(message);
@@ -105,7 +110,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void sendVerificationMail(String email, String id) {
         try {
-            String VERIFICATION_LINK = "http://localhost:3000/auth/email/";
+            String VERIFICATION_LINK = front_url + "/auth/email/";
             if (email == null)
                 throw new NotFoundException("이메일이 없음.");
             UUID uuid = UUID.randomUUID();

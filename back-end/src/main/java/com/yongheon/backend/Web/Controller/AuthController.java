@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,9 +33,8 @@ public class AuthController {
     private JwtTokenProvider jwtTokenProvider;
 
     @PostMapping("/email")
-    public ResponseEntity<?> verify() {
+    public ResponseEntity<?> verify(@AuthenticationPrincipal String id) {
         try {
-            String id = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             String email = userService.getEmail(id);
 
             userService.sendVerificationMail(email, id);
@@ -46,15 +46,14 @@ public class AuthController {
     }
 
     @GetMapping("/email/waiting")
-    public ResponseEntity<?> checkVerify() {
+    public ResponseEntity<?> checkVerify(@AuthenticationPrincipal String id) {
         try {
-            String id = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             String auth = userService.getAuth(id);
 
             if (auth.equals("ROLE_USER_CERT"))
                 return new ResponseEntity<>(HttpStatus.OK);
-            else
-                return new ResponseEntity<>(HttpStatus.ACCEPTED);
+
+            return new ResponseEntity<>(HttpStatus.ACCEPTED);
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -62,17 +61,13 @@ public class AuthController {
     }
 
     @GetMapping("/email/verify")
-    public ResponseEntity<?> getVerify(@RequestParam String id, @RequestParam String key, HttpServletResponse response)
+    public ResponseEntity<?> getVerify(@RequestParam String id, @RequestParam String key, HttpServletResponse response,
+            HttpServletRequest request)
             throws NotFoundException {
         try {
-            System.out.println("email test");
+            System.out.println("id: " + id);
+            System.out.println("key: " + key);
             userService.verifyEmail(id, key);
-            // List<GrantedAuthority> authorities = (List<GrantedAuthority>)
-            // SecurityContextHolder.getContext()
-            // .getAuthentication().getAuthorities();
-            // String auth = authorities.get(0).getAuthority();
-
-            userService.setAuth("ROLE_USER_CERT");
 
             String newAccessToken = jwtTokenProvider.generateAccessToken(id, "ROLE_USER_CERT");
             response.setHeader("Authorization", newAccessToken);
@@ -83,7 +78,7 @@ public class AuthController {
     }
 
     @PostMapping("/refresh")
-    public void refreshToken(HttpServletRequest request,
+    public ResponseEntity<?> refreshToken(HttpServletRequest request,
             HttpServletResponse response, @CookieValue(value = "refreshToken") String refreshToken) throws IOException {
         try {
             String ip = request.getHeader("X-Forwarded-For");
@@ -113,6 +108,7 @@ public class AuthController {
             if (tokenStatus == JwtTokenProvider.TokenStatus.VALID) {
                 String newAccessToken = jwtTokenProvider.regenerateAccessToken(accessToken);
                 response.setHeader("Authorization", newAccessToken);
+                return new ResponseEntity<>(HttpStatus.OK);
             }
             /*
              * 리프레시 토큰이 유효치 않을 때, 리프레시 토큰 삭제 & 액세스 토큰 삭제(프론트 단에서 처리)
@@ -124,12 +120,12 @@ public class AuthController {
                 cookie.setMaxAge(0);
                 cookie.setPath("/");
                 response.addCookie(cookie);
-                response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
             }
 
         } catch (Exception e) {
             e.printStackTrace();
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

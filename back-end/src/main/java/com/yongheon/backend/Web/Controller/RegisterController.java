@@ -1,5 +1,7 @@
 package com.yongheon.backend.Web.Controller;
 
+import java.util.Map;
+
 import javax.inject.Inject;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -51,6 +53,9 @@ public class RegisterController {
 			if (ip == null) {
 				ip = request.getRemoteAddr();
 			}
+			Boolean isValid = service.register(data);
+			if (!isValid)
+				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 
 			String refreshToken = jwtTokenProvider.generateRefreshToken(data.getId(), ip);
 			Cookie cookie = new Cookie("refreshToken", refreshToken);
@@ -58,9 +63,8 @@ public class RegisterController {
 			cookie.setSecure(true);
 			cookie.setPath("/ajax/auth/refresh");
 			response.addCookie(cookie);
-			String jsonData = new GsonBuilder().serializeNulls().create().toJson(service.register(data));
 
-			return new ResponseEntity<>(jsonData, HttpStatus.OK);
+			return new ResponseEntity<>(HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new ResponseEntity<>("Server Error", HttpStatus.INTERNAL_SERVER_ERROR);
@@ -68,21 +72,25 @@ public class RegisterController {
 	}
 
 	@PostMapping(value = "/id-exist")
-	public ResponseEntity<?> checkIDExist(@RequestBody String id) {
+	public ResponseEntity<?> checkIDExist(@RequestBody Map<String, String> idMap) {
 		try {
-			String jsonData = new GsonBuilder().serializeNulls().create().toJson(service.validId(id));
-			return new ResponseEntity<>(jsonData, HttpStatus.OK);
+			String id = idMap.get("id");
+			if (!service.idRegExp(id))
+				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(service.isExistId(id), HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new ResponseEntity<>("Server Error", HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
 	@PostMapping(value = "/nick-exist")
-	public ResponseEntity<?> checkNickExist(@RequestBody String nick) {
+	public ResponseEntity<?> checkNickExist(@RequestBody Map<String, String> nickMap) {
 		try {
-			String jsonData = new GsonBuilder().serializeNulls().create().toJson(service.validNick(nick));
-			return new ResponseEntity<>(jsonData, HttpStatus.OK);
+			String nick = nickMap.get("nick");
+			if (!service.nickRegExp(nick))
+				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(service.isExistNick(nick), HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new ResponseEntity<>("Server Error", HttpStatus.INTERNAL_SERVER_ERROR);
@@ -90,10 +98,12 @@ public class RegisterController {
 	}
 
 	@PostMapping(value = "/email-exist")
-	public ResponseEntity<?> checkEmailExist(@RequestBody String email) {
+	public ResponseEntity<?> checkEmailExist(@RequestBody Map<String, String> emailMap) {
 		try {
-			String jsonData = new GsonBuilder().serializeNulls().create().toJson(service.validEmail(email));
-			return new ResponseEntity<>(jsonData, HttpStatus.OK);
+			String email = emailMap.get("email");
+			if (!service.emailRegExp(email))
+				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(service.isExistEmail(email), HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new ResponseEntity<>("Server Error", HttpStatus.INTERNAL_SERVER_ERROR);

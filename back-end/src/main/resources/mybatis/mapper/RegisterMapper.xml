@@ -30,7 +30,7 @@
 	 		#{pw},
 	 		#{nick},
 	 		#{email},
-			0
+			1
 	 	) 
 	</insert>
 </mapper>

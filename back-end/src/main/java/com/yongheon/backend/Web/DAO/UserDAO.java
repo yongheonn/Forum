@@ -20,5 +20,5 @@ public interface UserDAO {
 
     public boolean setAuth(int auth);
 
-    public boolean verifyUser(String id);
+    public void verifyUser(String id);
 }

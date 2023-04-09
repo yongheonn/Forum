@@ -63,7 +63,6 @@ public class SubjectController {
     @PostMapping("/update")
     public ResponseEntity<?> updateSubject(@RequestParam String subject) {
         try {
-            String id = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
@@ -75,7 +74,6 @@ public class SubjectController {
     @PostMapping("/delete")
     public ResponseEntity<?> deleteSubject(@RequestParam String subject) {
         try {
-            String id = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {

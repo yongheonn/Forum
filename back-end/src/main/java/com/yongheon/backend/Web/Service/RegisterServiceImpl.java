@@ -4,6 +4,7 @@ import java.util.regex.Pattern;
 
 import javax.inject.Inject;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.yongheon.backend.Web.DAO.RegisterDAO;
@@ -14,59 +15,62 @@ public class RegisterServiceImpl implements RegisterService {
     @Inject
     private RegisterDAO dao;
 
-    private Boolean idRegExp(String id) throws Exception {
-        String regExp = "^[a-z|0-9|_-]{5,20}$";
+    @Override
+    public Boolean idRegExp(String id) throws Exception {
+        String regExp = "^[a-z0-9_-]{5,20}$";
         return Pattern.matches(regExp, id);
     }
 
-    private Boolean pwRegExp(String pw) throws Exception {
-        String regExp = "^[a-z|A-Z|0-9|{}\\[\\]/?.,;:|)*~`!^-_+<>@#$%&\\=('\"]{8,16}$";
+    @Override
+    public Boolean pwRegExp(String pw) throws Exception {
+        String regExp = "^[a-zA-Z0-9{}\\[\\]/?.,;:|)*~`!^-_+<>@#$%&\\=('\"]{8,16}$";
         return Pattern.matches(regExp, pw);
     }
 
-    private Boolean nickRegExp(String nick) throws Exception {
-        String regExp = "^[a-z|A-Z|0-9|_-|ㄱ-ㅎ|ㅏ-ㅣ|가-힣]{5,20}$";
+    @Override
+    public Boolean nickRegExp(String nick) throws Exception {
+        String regExp = "^[a-zA-Z0-9_-ㄱ-ㅎㅏ-ㅣ가-힣]{5,20}$";
         return Pattern.matches(regExp, nick);
     }
 
-    private Boolean emailRegExp(String email) throws Exception {
-        String regExp = "^[0-9|a-z|A-Z]([-_.]?[0-9|a-z|A-Z])*@[0-9|a-z|A-Z]([-_.]?[0-9|a-z|A-Z])*.[a-z|A-Z]*$";
+    @Override
+    public Boolean emailRegExp(String email) throws Exception {
+        String regExp = "^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]*$";
         return Pattern.matches(regExp, email);
     }
 
-    private Boolean isExistId(String id) throws Exception {
+    @Override
+    public Boolean isExistId(String id) throws Exception {
         return dao.isExistId(id) != null;
     }
 
-    private Boolean isExistNick(String nick) throws Exception {
+    @Override
+    public Boolean isExistNick(String nick) throws Exception {
         return dao.isExistNick(nick) != null;
     }
 
-    private Boolean isExistEmail(String email) throws Exception {
+    @Override
+    public Boolean isExistEmail(String email) throws Exception {
         return dao.isExistEmail(email) != null;
     }
 
-    @Override
-    public Boolean validId(String id) throws Exception {
+    private Boolean isValidId(String id) throws Exception {
         if (!idRegExp(id))
             return false;
         return !isExistId(id);
     }
 
-    @Override
-    public Boolean validPw(String pw) throws Exception {
+    private Boolean isValidPw(String pw) throws Exception {
         return pwRegExp(pw);
     }
 
-    @Override
-    public Boolean validNick(String nick) throws Exception {
+    private Boolean isValidNick(String nick) throws Exception {
         if (!nickRegExp(nick))
             return false;
         return !isExistNick(nick);
     }
 
-    @Override
-    public Boolean validEmail(String email) throws Exception {
+    private Boolean isValidEmail(String email) throws Exception {
         if (!emailRegExp(email))
             return false;
         return !isExistEmail(email);
@@ -75,13 +79,13 @@ public class RegisterServiceImpl implements RegisterService {
     @Override
     public Boolean register(RegisterDTO registerDTO) throws Exception {
         try {
-            if (!(validId(registerDTO.getId())))
+            if (!isValidId(registerDTO.getId()))
                 return false;
-            if (!(validPw(registerDTO.getPw())))
+            if (!isValidPw(registerDTO.getPw()))
                 return false;
-            if (!(validNick(registerDTO.getNick())))
+            if (!isValidNick(registerDTO.getNick()))
                 return false;
-            if (!(validEmail(registerDTO.getEmail())))
+            if (!isValidEmail(registerDTO.getEmail()))
                 return false;
             return dao.register(registerDTO);
         } catch (Exception e) {

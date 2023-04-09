@@ -24,7 +24,7 @@
 		select nick from user where id = #{id}
 	</select>
 
-	<select id="verifyUser" resultType="Integer">
+	<update id="verifyUser">
 		update user set auth=2 where id=#{id}
-	</select>
+	</update>
 </mapper>
