@@ -1,6 +1,0 @@
-spring:
-  config:
-    import:
-      - classpath:/config/db-config.yml
-      - classpath:/config/db-prod-config.yml
-      - classpath:/config/db-local-config.yml
