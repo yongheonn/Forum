@@ -57,8 +57,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.addAllowedOrigin("*");
-        configuration.setAllowedMethods(Arrays.asList("HEAD", "GET", "POST"));
+        configuration.addAllowedOrigin("https://yongheonn.com");
+        configuration.addAllowedOrigin("https://www.yongheonn.com");
+        configuration.setAllowedMethods(Arrays.asList("HEAD", "GET", "POST", "OPTIONS", "PATCH"));
         configuration.addAllowedHeader("*");
         configuration.setAllowCredentials(true);
         configuration.setMaxAge(3600L);
