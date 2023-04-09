@@ -24,10 +24,6 @@ const Logout = () => {
     const response = await fetch(url, option);
     if (response.status === 200) {
       localStorage.removeItem('access_token');
-      localStorage.removeItem('email');
-      localStorage.removeItem('nick');
-      localStorage.removeItem('auth');
-      localStorage.removeItem('id');
       window.location.replace('/');
     } else {
       return '오류가 발생했습니다.';

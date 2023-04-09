@@ -20,14 +20,16 @@ const VerifyAuthLink = () => {
 
   const verifyAuth = async () => {
     const nowUrl = window.location.href;
-    const index = nowUrl.indexOf('verify/');
-    const urlInfo = nowUrl.slice(index + 7);
+    const index = nowUrl.indexOf('email/');
+    const urlInfo = nowUrl.slice(index + 6);
     const index2 = urlInfo.indexOf('/');
     const id = urlInfo.slice(0, index2);
     const key = urlInfo.slice(index2 + 1);
     url += 'id=' + id + '&key=' + key;
     const response = await fetch(url, option);
     if (response.status === 200) {
+      const accessToken = response.headers.get('Authorization');
+      if (typeof accessToken === 'string') localStorage.setItem('access_token', accessToken);
       window.location.href = '/';
     }
   };

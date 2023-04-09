@@ -51,11 +51,6 @@ const LoginForm = () => {
     if (response.status === 200) {
       const accessToken = response.headers.get('Authorization');
       if (typeof accessToken === 'string') localStorage.setItem('access_token', accessToken);
-      const data: UserData = (await response.json()) as UserData;
-      localStorage.setItem('id', data.id);
-      localStorage.setItem('nick', data.nick);
-      localStorage.setItem('email', data.email);
-      localStorage.setItem('auth', data.auth.toString());
     } else if (response.status === 404) {
       return '아이디 또는 비밀번호를 잘못 입력했습니다. 입력한 내용을 다시 확인해주세요.';
     } else {

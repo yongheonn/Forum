@@ -11,6 +11,7 @@ const spin = keyframes`
     `;
 
 const Loading = styled(AiOutlineLoading)`
+  color: black;
   animation: ${spin} 2s linear infinite;
 `;
 

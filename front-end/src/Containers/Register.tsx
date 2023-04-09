@@ -51,7 +51,7 @@ const IdForm = ({
   const isValid = (value: string) => {
     if (isEmpty(value)) return false;
     if (!isValidRegExp(value)) return false;
-    return checkIsDuplicate(value).then(isDuplicate => !isDuplicate);
+    return checkIsValid(value).then(isDuplicate => !isDuplicate);
   };
 
   const isEmpty = (value: string) => {
@@ -61,7 +61,7 @@ const IdForm = ({
   };
 
   const isValidRegExp = (value: string) => {
-    const regExp = /^[a-z|0-9|_-]{5,20}$/;
+    const regExp = /^[a-z0-9_-]{5,20}$/;
     const isMatch = regExp.test(value);
     if (isMatch) return true;
     setMsg('5~20자의 영문 소문자, 숫자와 특수기호(_),(-)만 사용 가능합니다.');
@@ -69,8 +69,8 @@ const IdForm = ({
     return false;
   };
 
-  const checkIsDuplicate = async (value: string) => {
-    option.body = JSON.stringify(value);
+  const checkIsValid = async (value: string) => {
+    option.body = JSON.stringify({ id: value });
     const response = await fetch(url, option);
     if (response.status === 200) {
       try {
@@ -137,7 +137,7 @@ const PwForm = ({
   };
 
   const isValidRegExp = (value: string) => {
-    const regExp = /^[a-z|A-Z|0-9|{}[\]/?.,;:|)*~`!^\-_+<>@#$%&\\=('"]{8,16}$/;
+    const regExp = /^[a-zA-Z0-9{}[\]/?.,;:|)*~`!^\-_+<>@#$%&\\=('"]{8,16}$/;
     const isMatch = regExp.test(value);
     isMatch ? setMsg('사용 가능한 비밀번호입니다.') : setMsg('8~16자 영문 대소문자, 숫자, 특수문자를 사용하세요.');
 
@@ -259,7 +259,7 @@ const NickForm = ({
   };
 
   const isValidRegExp = (value: string) => {
-    const regExp = /^[a-z|A-Z|0-9|_\-|ㄱ-ㅎ|ㅏ-ㅣ|가-힣]{5,20}$/;
+    const regExp = /^[a-zA-Z0-9_\-ㄱ-ㅎㅏ-ㅣ가-힣]{5,20}$/;
     const isMatch = regExp.test(value);
     if (isMatch) return true;
     setMsg('5~20자의 영문 대소문자, 숫자, 한글과 특수기호(_),(-)만 사용 가능합니다.');
@@ -268,7 +268,7 @@ const NickForm = ({
   };
 
   const checkIsDuplicate = async (value: string) => {
-    option.body = JSON.stringify(value);
+    option.body = JSON.stringify({ nick: value });
     const response = await fetch(url, option);
     if (response.status === 200) {
       try {
@@ -345,7 +345,7 @@ const EmailForm = ({
   };
 
   const isValidRegExp = (value: string) => {
-    const regExp = /^[0-9|a-z|A-Z]([-_.]?[0-9|a-z|A-Z])*@[0-9|a-z|A-Z]([-_.]?[0-9|a-z|A-Z])*\.[a-z|A-Z]+$/i;
+    const regExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]+$/i;
     const isMatch = regExp.test(value);
     if (isMatch) return true;
     setMsg('올바른 이메일을 입력해주세요.');
@@ -354,7 +354,7 @@ const EmailForm = ({
   };
 
   const checkIsDuplicate = async (value: string) => {
-    option.body = JSON.stringify(value);
+    option.body = JSON.stringify({ email: value });
     const response = await fetch(url, option);
     if (response.status === 200) {
       try {
@@ -422,9 +422,9 @@ const RegisterForm = ({ setOnEmailAuth }: { setOnEmailAuth: React.Dispatch<React
     if (response.status === 200) {
       const accessToken = response.headers.get('Authorization');
       if (typeof accessToken === 'string') localStorage.setItem('access_token', accessToken);
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      const canRegister = await response.json();
-      if (canRegister) await emailAuth();
+      await emailAuth();
+    } else if (response.status === 400) {
+      console.error('400 err');
     }
   };
 

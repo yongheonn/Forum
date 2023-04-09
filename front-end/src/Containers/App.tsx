@@ -10,6 +10,7 @@ import TopPannel from './TopPannel';
 import { VerifyAuthLink } from './WaitEmailAuth';
 import { Main } from './Main';
 import { SetLangDefault } from './LangSetting';
+import BottomPanel from './BottomPanel';
 
 const deleteConsole = () => {
   if (process.env.NODE_ENV === 'production') {
@@ -81,6 +82,7 @@ const App: React.FC = () => {
           </AppContext.Provider>
         </MainArticle>
       </MainPanel>
+      <BottomPanel />
     </Fragment>
   );
 };
