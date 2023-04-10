@@ -381,6 +381,13 @@ const EmailForm = ({
   );
 };
 
+type UserData = {
+  id: string;
+  nick: string;
+  email: string;
+  auth: number;
+};
+
 const Form = styled.form`
   color: #000000 !important;
 `;
@@ -420,8 +427,18 @@ const RegisterForm = ({ setOnEmailAuth }: { setOnEmailAuth: React.Dispatch<React
   const register = async () => {
     const response = await fetch(url, option);
     if (response.status === 200) {
+      const data: UserData = (await response.json()) as UserData;
       const accessToken = response.headers.get('Authorization');
-      if (typeof accessToken === 'string') localStorage.setItem('access_token', accessToken);
+      if (accessToken !== null) localStorage.setItem('access_token', accessToken);
+      localStorage.setItem('id', data.id);
+      localStorage.setItem('nick', data.nick);
+      localStorage.setItem('email', data.email);
+      let auth = '';
+      if (data.auth === 0) auth = 'ROLE_GUEST';
+      else if (data.auth === 1) auth = 'ROLE_USER_NONCERT';
+      else if (data.auth === 2) auth = 'ROLE_USER_CERT';
+      else if (data.auth === 3) auth = 'ROLE_ADMIN';
+      localStorage.setItem('auth', auth);
       await emailAuth();
     } else if (response.status === 400) {
       console.error('400 err');
