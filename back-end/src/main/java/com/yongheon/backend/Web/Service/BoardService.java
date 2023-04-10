@@ -23,6 +23,8 @@ public interface BoardService {
 
     public void encode(BoardDTO board, String user_id, String auth); // 비밀번호만 리셋
 
+    public boolean checkPw(String pw);
+
     public void updateView(int bno);
 
     public void deleteBoard(int bno);

@@ -135,13 +135,21 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public void encode(BoardDTO board, String user_id, String auth) {
-        if (board.getPw() != null) { // 비밀글일 때
-            board.setPw("pw");
-        }
+
         if (board.getUser_id().equals(user_id))
             board.setUser_id("id");
-        else
+        else {
             board.setUser_id(null);
+            if (board.getPw() != null) { // 비밀글일 때
+                board.setPw("pw");
+            }
+        }
+    }
+
+    @Override
+    public boolean checkPw(String pw) {
+        String regExp = "^[a-z0-9]{6}$";
+        return Pattern.matches(regExp, pw);
     }
 
     @Override

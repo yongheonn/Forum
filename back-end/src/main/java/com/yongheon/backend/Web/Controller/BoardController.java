@@ -79,11 +79,13 @@ public class BoardController {
             BoardDTO board = boardService.getBoard(bno);
             if (board.getDeleted())
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-
-            if (board.getPw() != null && !auth.equals("ROLE_ADMIN") && !board.getUser_id().equals(id)) {
-                return new ResponseEntity<>(HttpStatus.PRECONDITION_REQUIRED);
+            if (!auth.equals("ROLE_ADMIN") && !board.getUser_id().equals(id)) {
+                if (board.getPw() != null) {
+                    if (board.getPw().equals("nonpw"))
+                        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+                    return new ResponseEntity<>(HttpStatus.PRECONDITION_REQUIRED);
+                }
             }
-
             boardService.updateView(bno);
             boardService.encode(board, id, auth);
             String jsonData = new GsonBuilder().serializeNulls().create().toJson(board);
@@ -95,8 +97,8 @@ public class BoardController {
     }
 
     @GetMapping("/read-secret")
-    public ResponseEntity<?> getSecretBoard(@AuthenticationPrincipal String id, @RequestParam int bno,
-            String pw) {
+    public ResponseEntity<?> getSecretBoard(@AuthenticationPrincipal String id, @RequestParam("bno") int bno,
+            @RequestParam("pw") String pw) {
         try {
             String auth = SecurityContextHolder.getContext().getAuthentication()
                     .getAuthorities().toArray()[0].toString();
@@ -106,13 +108,12 @@ public class BoardController {
             if (board.getDeleted())
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
-            if (!auth.equals("ROLE_ADMIN") && !board.getUser_id().equals(id) && !board.getPw().equals(pw)) // 관리자 권한이
-                                                                                                           // 있거나 글
-                // 작성자이거나 비밀번호를 맞춘
-                // 경우가 아닐 때
+            if (!boardService.checkPw(pw)) // 올바르지 않은 비밀번호가 전송되었을 때
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-
+            if (!board.getPw().equals(pw)) // 비밀번호가 틀렸을 때
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             boardService.encode(board, id, auth);
+
             String jsonData = new GsonBuilder().serializeNulls().create().toJson(board);
 
             return new ResponseEntity<>(jsonData, HttpStatus.OK);
@@ -125,10 +126,8 @@ public class BoardController {
     @PostMapping("/update")
     public ResponseEntity<?> updateBoard(@AuthenticationPrincipal String id, @RequestBody BoardDTO boardUpdated) {
         try {
-            String auth = SecurityContextHolder.getContext().getAuthentication()
-                    .getAuthorities().toArray()[0].toString();
             BoardDTO board = boardService.getBoard(boardUpdated.getBno());
-            if (!auth.equals("ROLE_ADMIN") && !board.getUser_id().equals(id)) // 관리자 권한이 있거나 작성자인 경우가 아닐 때
+            if (!board.getUser_id().equals(id)) // 작성자인 경우가 아닐 때
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             if (!boardService.regExpContent(boardUpdated))
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
