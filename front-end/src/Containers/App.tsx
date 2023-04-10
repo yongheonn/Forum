@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
 import { matchPath, Route, Routes, useParams } from 'react-router-dom';
 import '../styles/App.css';
+import { isMobile } from 'react-device-detect';
 import { Subject } from './Subject';
 import Setting from './Setting';
 import TopPannel from './TopPannel';
@@ -23,7 +24,7 @@ const deleteConsole = () => {
 const MainPanel = styled.div`
   max-width: 1300px;
   display: grid;
-  grid-template-columns: 0.8fr;
+  grid-template-columns: ${isMobile ? '100%' : '0.7fr'};
   margin: auto;
 `;
 
