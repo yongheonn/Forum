@@ -1,6 +1,6 @@
 import React, { ChangeEvent, Fragment, useContext, useEffect, useRef, useState } from 'react';
 import { AiFillLock } from 'react-icons/ai';
-import { Link, Route, Routes, useParams } from 'react-router-dom';
+import { Link, Route, Routes, useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { HorizontalPanel, VerticalPanel } from '../Components/Panel';
 import { AjaxGetOption, AjaxPostOption } from '../Modules/api_option';
@@ -95,6 +95,12 @@ const Header = ({ board }: { board: BoardT }) => {
             <span>{board.writer}</span>
             <Separator>{'|'}</Separator>
             <span>{'작성일 ' + board.reg_date}</span>
+            {board.update_date !== null ? (
+              <Fragment>
+                <Separator>{'|'}</Separator>
+                <span>{'수정일 ' + board.update_date}</span>
+              </Fragment>
+            ) : null}
           </InfoLeftPanel>
           <InfoRightPanel>
             <span>{'조회수 ' + board.view.toString()}</span>
@@ -118,7 +124,6 @@ const Recommend = ({ recommend }: { recommend: number }) => {
   const url = apiUrl + '/ajax/board/recommend';
   const { bno } = useParams();
   const [recommendNum, setRecommendNum] = useState<number>(recommend);
-  const [errorMsg, setErrorMsg] = useState<string>('');
 
   const option: AjaxPostOption = {
     method: 'POST',
@@ -152,7 +157,7 @@ const Recommend = ({ recommend }: { recommend: number }) => {
         .then(() => null)
         .catch(() => null);
     } else if (response.status === 400) {
-      setErrorMsg('이미 추천을 했습니다.');
+      alert('이미 추천을 했습니다.');
     }
   };
 
@@ -160,7 +165,6 @@ const Recommend = ({ recommend }: { recommend: number }) => {
     <Fragment>
       <RecommendPanel>
         <button onClick={handleClick}>{'추천 ' + recommendNum.toString()}</button>
-        <span>{errorMsg}</span>
       </RecommendPanel>
     </Fragment>
   );
@@ -212,12 +216,12 @@ const MainText = ({
       <VerticalPanel>
         <MainTextPanel dangerouslySetInnerHTML={{ __html: board.content }} />
         <Recommend recommend={board.recommend} />
-        {board.user_id === 'id' ? (
-          <HorizontalPanel>
-            <UpdateLink to={'update'}>수정</UpdateLink>
+        <HorizontalPanel>
+          {board.user_id === 'id' ? <UpdateLink to={'update'}>수정</UpdateLink> : null}
+          {board.user_id === 'id' || localStorage.getItem('auth') === 'ROLE_ADMIN' ? (
             <DeleteButton onClick={clickDelete}>삭제</DeleteButton>
-          </HorizontalPanel>
-        ) : null}
+          ) : null}
+        </HorizontalPanel>
       </VerticalPanel>
     </Fragment>
   );
@@ -236,10 +240,12 @@ const CheckSecret = ({
   bno,
   setBoard,
   setSecretCheck,
+  setDelay,
 }: {
   bno: string;
   setBoard: React.Dispatch<React.SetStateAction<BoardT>>;
   setSecretCheck: React.Dispatch<React.SetStateAction<boolean>>;
+  setDelay: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const [pw, setPw] = useState<string[]>(['', '', '', '', '', '']);
   const [selected, setSelected] = useState(0);
@@ -299,6 +305,7 @@ const CheckSecret = ({
       setSecretCheck(false);
       setBoard(tempBoard);
       setEle(null);
+      setDelay(true);
     } else if (response.status === 303) {
       refreshAccessToken(getBoardSecret)
         .then(() => null)
@@ -359,6 +366,7 @@ const CheckSecret = ({
 
 const Board = () => {
   const [board, setBoard] = useState<BoardT>({} as BoardT);
+  const navigate = useNavigate();
 
   const { bno } = useParams();
   const [error, setError] = useState(0);
@@ -396,6 +404,9 @@ const Board = () => {
       refreshAccessToken(getBoard)
         .then(() => null)
         .catch(() => null);
+    } else if (response.status === 401) {
+      alert('읽을 권한이 없습니다.');
+      navigate('../');
     } else if (response.status === 404) {
       setError(404);
     } else if (response.status === 428) {
@@ -422,7 +433,12 @@ const Board = () => {
               element={
                 <Fragment>
                   {secretCheck === true ? (
-                    <CheckSecret bno={bno as string} setBoard={setBoard} setSecretCheck={setSecretCheck} />
+                    <CheckSecret
+                      bno={bno as string}
+                      setBoard={setBoard}
+                      setSecretCheck={setSecretCheck}
+                      setDelay={setDelay}
+                    />
                   ) : delay ? (
                     <VerticalPanel>
                       <Header board={board} />

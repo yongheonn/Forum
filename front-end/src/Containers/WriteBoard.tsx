@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, { ChangeEvent, Fragment, useContext, useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { HorizontalPanel } from '../Components/Panel';
@@ -6,6 +6,7 @@ import { AjaxPostOption } from '../Modules/api_option';
 import { refreshAccessToken } from './RefreshToken';
 import { MainContext } from './Main';
 import { apiUrl } from '../Modules/api_url';
+import { CheckBox } from '../Components/CheckBox';
 
 type BoardT = {
   bno: number; // 게시물 번호
@@ -53,6 +54,27 @@ const TitleInput = styled.input`
   width: 100%;
 `;
 
+const PwPanel = styled(HorizontalPanel)`
+  border-color: #bbb;
+  border-width: 1px;
+  border-style: solid;
+  margin-bottom: 20px;
+`;
+
+const Pw = styled.span`
+  border-color: #000;
+  border-right-width: 1px;
+  border-right-style: solid;
+  padding: 8px;
+  white-space: nowrap;
+`;
+
+const PwInput = styled.input`
+  padding-left: 8px;
+  border-width: 0px;
+  width: 100%;
+`;
+
 const ContentPanel = styled.div`
   border-color: #bbb;
   border-width: 1px;
@@ -90,7 +112,9 @@ const CreateBoard = ({ sid }: { sid: string }) => {
   };
 
   const regiBoard = async () => {
-    option.body = JSON.stringify({ title: boardInput.title, content: boardInput.content, pw: boardInput.pw, sid });
+    let { pw } = boardInput;
+    if (pw === '') pw = null;
+    option.body = JSON.stringify({ title: boardInput.title, content: boardInput.content, pw, sid });
     const accessToken = localStorage.getItem('access_token');
     if (accessToken) option.headers.Authorization = accessToken;
     const response = await fetch(url, option);
@@ -109,6 +133,13 @@ const CreateBoard = ({ sid }: { sid: string }) => {
       console.log('권한 없음');
     }
   };
+
+  useEffect(() => {
+    if (!localStorage.getItem('access_token')) {
+      alert('권한이 없습니다. 로그인해주세요.');
+      navigate('../');
+    }
+  }, []);
 
   return <WriteBoard boardInput={boardInput} actionBoard={regiBoard} setBoardInput={setBoardInput} />;
 };
@@ -138,7 +169,9 @@ const UpdateBoard = ({ board, bno }: { board: BoardT; bno: string }) => {
   };
 
   const updateBoard = async () => {
-    option.body = JSON.stringify({ title: boardInput.title, content: boardInput.content, pw: boardInput.pw, bno });
+    let { pw } = boardInput;
+    if (pw === '') pw = null;
+    option.body = JSON.stringify({ title: boardInput.title, content: boardInput.content, pw, bno });
     const accessToken = localStorage.getItem('access_token');
     if (accessToken) option.headers.Authorization = accessToken;
     const response = await fetch(url, option);
@@ -170,9 +203,13 @@ const WriteBoard = ({
   actionBoard: () => Promise<void>;
   setBoardInput: React.Dispatch<React.SetStateAction<{ title: string; content: string; pw: string | null }>>;
 }) => {
-  const contentPanel = useRef<HTMLDivElement | null>(null);
-  const titleInput = useRef<HTMLInputElement | null>(null);
   const [content, setContent] = useState<string>(boardInput.content);
+  const [pwCheck, setPwCheck] = useState<boolean>(boardInput.pw !== null);
+  const [tempPw, setTempPw] = useState<string>(boardInput.pw ? boardInput.pw : '');
+  const pwOptions = ['자신만 볼 수 있게', '코드로 일부 공개'];
+  const [selectedOption, setSelectedOption] = useState<string>(
+    boardInput.pw === 'nonpw' || boardInput.pw === null ? pwOptions[0] : pwOptions[1]
+  );
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -185,6 +222,52 @@ const WriteBoard = ({
     setBoardInput({
       ...boardInput,
       title: e.target.value,
+    });
+  };
+
+  const handlePwOheckChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { checked } = e.target;
+    setPwCheck(checked);
+    if (checked === true) {
+      if (selectedOption === '자신만 볼 수 있게')
+        setBoardInput({
+          ...boardInput,
+          pw: 'nonpw',
+        });
+      else
+        setBoardInput({
+          ...boardInput,
+          pw: tempPw,
+        });
+    }
+  };
+
+  const handlePwOptionChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    const selected: string = e.target.value;
+    setSelectedOption(selected);
+    if (selected === '자신만 볼 수 있게')
+      setBoardInput({
+        ...boardInput,
+        pw: 'nonpw',
+      });
+    else
+      setBoardInput({
+        ...boardInput,
+        pw: tempPw,
+      });
+  };
+
+  const setPwOptions: React.ReactNode = pwOptions.map(pwOption => (
+    <option value={pwOption} key={pwOption}>
+      {pwOption}
+    </option>
+  ));
+
+  const handlePwChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setTempPw(e.target.value);
+    setBoardInput({
+      ...boardInput,
+      pw: e.target.value,
     });
   };
 
@@ -204,11 +287,31 @@ const WriteBoard = ({
       <Header>글쓰기</Header>
       <TitlePanel>
         <Title>제목</Title>
-        <TitleInput id="title" ref={titleInput} maxLength={75} value={boardInput.title} onChange={handleTitleChange} />
+        <TitleInput id="title" maxLength={75} value={boardInput.title} onChange={handleTitleChange} />
       </TitlePanel>
+      <PwPanel>
+        <CheckBox disabled={false} checked={pwCheck} onChange={handlePwOheckChange}>
+          <Pw>비밀글</Pw>
+        </CheckBox>
+        {pwCheck ? (
+          <Fragment>
+            <select onChange={handlePwOptionChange} value={selectedOption}>
+              {setPwOptions}
+            </select>
+            {selectedOption === '코드로 일부 공개' ? (
+              <PwInput
+                id="pw"
+                maxLength={6}
+                value={tempPw}
+                onChange={handlePwChange}
+                disabled={selectedOption !== '코드로 일부 공개'}
+              />
+            ) : null}
+          </Fragment>
+        ) : null}
+      </PwPanel>
       <ContentPanel
         id="content"
-        ref={contentPanel}
         contentEditable={true}
         dangerouslySetInnerHTML={{ __html: content }}
         onInput={handleContentInput}></ContentPanel>
