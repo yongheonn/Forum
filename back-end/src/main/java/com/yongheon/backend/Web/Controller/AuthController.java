@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.ibatis.javassist.NotFoundException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -31,6 +32,9 @@ public class AuthController {
 
     @Inject
     private JwtTokenProvider jwtTokenProvider;
+
+    @Value("${api-url}")
+    private String api_url;
 
     @PostMapping("/email")
     public ResponseEntity<?> verify(@AuthenticationPrincipal String id) {
@@ -118,7 +122,7 @@ public class AuthController {
                 cookie.setHttpOnly(true);
                 cookie.setSecure(true);
                 cookie.setMaxAge(0);
-                cookie.setPath("/");
+                cookie.setPath(api_url + "/ajax/auth/refresh");
                 response.addCookie(cookie);
                 cookie.setDomain("yongheonn.com");
                 return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);

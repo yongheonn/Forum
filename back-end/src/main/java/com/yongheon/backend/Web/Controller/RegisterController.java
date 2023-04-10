@@ -7,6 +7,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -32,6 +33,9 @@ public class RegisterController {
 
 	@Inject
 	private JwtTokenProvider jwtTokenProvider;
+
+	@Value("${api-url}")
+	private String api_url;
 
 	@PostMapping(value = "")
 	public ResponseEntity<?> register(@RequestBody RegisterDTO data, HttpServletRequest request,
@@ -65,7 +69,7 @@ public class RegisterController {
 			Cookie cookie = new Cookie("refreshToken", refreshToken);
 			cookie.setHttpOnly(true);
 			cookie.setSecure(true);
-			cookie.setPath("/ajax/auth/refresh");
+			cookie.setPath(api_url + "/ajax/auth/refresh");
 			cookie.setDomain("yongheonn.com");
 			response.addCookie(cookie);
 			String jsonData = new GsonBuilder().serializeNulls().create().toJson(userService.getUser(data.getId()));

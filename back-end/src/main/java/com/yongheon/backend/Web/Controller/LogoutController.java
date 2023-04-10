@@ -5,6 +5,7 @@ import java.io.IOException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,6 +14,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(value = "/ajax/logout/*")
 public class LogoutController {
 
+    @Value("${api-url}")
+    private String api_url;
+
     @PostMapping(value = "/")
     public void login(HttpServletResponse response) throws IOException {
         try {
@@ -20,7 +24,7 @@ public class LogoutController {
             cookie.setMaxAge(0);
             cookie.setSecure(true);
             cookie.setHttpOnly(true);
-            cookie.setPath("/ajax/auth/refresh");
+            cookie.setPath(api_url + "/ajax/auth/refresh");
             cookie.setDomain("yongheonn.com");
             response.addCookie(cookie);
         } catch (Exception e) {
