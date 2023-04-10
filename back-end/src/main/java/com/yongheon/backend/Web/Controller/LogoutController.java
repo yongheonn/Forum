@@ -6,6 +6,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseCookie;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,13 +21,16 @@ public class LogoutController {
     @PostMapping(value = "/")
     public void login(HttpServletResponse response) throws IOException {
         try {
-            Cookie cookie = new Cookie("refreshToken", null);
-            cookie.setMaxAge(0);
-            cookie.setSecure(true);
-            cookie.setHttpOnly(true);
-            cookie.setPath("/ajax/auth/refresh/");
-            cookie.setDomain("yongheonn.com");
-            response.addCookie(cookie);
+            ResponseCookie cookie = ResponseCookie.from("refreshToken", null)
+                    .path("/ajax/auth/refresh")
+                    .sameSite("None")
+                    .domain("yongheonn.com")
+                    .httpOnly(true)
+                    .secure(true)
+                    .maxAge(0)
+                    .build();
+
+            response.addHeader("Set-Cookie", cookie.toString());
         } catch (Exception e) {
             e.printStackTrace();
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);

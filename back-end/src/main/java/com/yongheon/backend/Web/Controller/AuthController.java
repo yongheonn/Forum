@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -118,13 +119,16 @@ public class AuthController {
              * 리프레시 토큰이 유효치 않을 때, 리프레시 토큰 삭제 & 액세스 토큰 삭제(프론트 단에서 처리)
              */
             else {
-                Cookie cookie = new Cookie("refreshToken", null);
-                cookie.setHttpOnly(true);
-                cookie.setSecure(true);
-                cookie.setMaxAge(0);
-                cookie.setPath("/ajax/auth/refresh/");
-                response.addCookie(cookie);
-                cookie.setDomain("yongheonn.com");
+                ResponseCookie cookie = ResponseCookie.from("refreshToken", null)
+                        .path("/ajax/auth/refresh")
+                        .sameSite("None")
+                        .domain("yongheonn.com")
+                        .httpOnly(true)
+                        .secure(true)
+                        .maxAge(0)
+                        .build();
+
+                response.addHeader("Set-Cookie", cookie.toString());
                 return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
             }
 

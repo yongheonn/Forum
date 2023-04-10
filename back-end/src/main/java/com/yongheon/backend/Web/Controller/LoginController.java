@@ -76,7 +76,7 @@ public class LoginController {
 			String refreshToken = jwtTokenProvider.generateRefreshToken(data.getId(), ip);
 
 			ResponseCookie cookie = ResponseCookie.from("refreshToken", refreshToken)
-					.path("/")
+					.path("/ajax/auth/refresh")
 					.sameSite("None")
 					.domain("yongheonn.com")
 					.httpOnly(true)
