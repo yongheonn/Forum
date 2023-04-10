@@ -13,11 +13,6 @@
   }
 }
 
-@font-face {
-  font-family: 'MalgunBd';
-  src: url('../assets/fonts/malgunbd.ttf') format('truetype');
-}
-
 .link_login {
   display: block;
   padding: 15px 0;
