@@ -387,7 +387,7 @@ const Form = styled.form`
 
 const RegisterForm = ({ setOnEmailAuth }: { setOnEmailAuth: React.Dispatch<React.SetStateAction<boolean>> }) => {
   const url = apiUrl + '/ajax/register/';
-  const emailUrl = apiUrl + 'ajax/auth/email/';
+  const emailUrl = apiUrl + '/ajax/auth/email/';
   const { t } = useTranslation();
 
   const [values, setValues] = useState({
