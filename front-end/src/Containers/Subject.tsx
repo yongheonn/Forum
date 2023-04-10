@@ -187,14 +187,11 @@ const BoardList = ({ subject, page }: { subject: SubjectT; page: string }) => {
 
   const option: AjaxGetOption = {
     method: 'GET',
-    'Access-Control-Expose-Headers': '*, Authorization',
+    credentials: 'include',
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
       Authorization: '',
-    },
-    xhrFields: {
-      withCredentials: true,
     },
   };
 
@@ -265,14 +262,11 @@ const Subject = () => {
 
   const option: AjaxGetOption = {
     method: 'GET',
-    'Access-Control-Expose-Headers': '*, Authorization',
+    credentials: 'include',
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
       Authorization: '',
-    },
-    xhrFields: {
-      withCredentials: true,
     },
   };
 

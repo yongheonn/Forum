@@ -12,14 +12,11 @@ const Logout = () => {
   const option: AjaxPostOption = {
     method: 'POST',
     body: JSON.stringify(1),
-    'Access-Control-Expose-Headers': '*, Authorization',
+    credentials: 'include',
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
       Authorization: '',
-    },
-    xhrFields: {
-      withCredentials: true,
     },
   };
 

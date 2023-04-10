@@ -128,14 +128,11 @@ const Recommend = ({ recommend }: { recommend: number }) => {
   const option: AjaxPostOption = {
     method: 'POST',
     body: !bno ? '' : bno,
-    'Access-Control-Expose-Headers': '*, Authorization',
+    credentials: 'include',
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
       Authorization: '',
-    },
-    xhrFields: {
-      withCredentials: true,
     },
   };
 
@@ -257,14 +254,11 @@ const CheckSecret = ({
 
   const option: AjaxGetOption = {
     method: 'GET',
-    'Access-Control-Expose-Headers': '*, Authorization',
+    credentials: 'include',
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
       Authorization: '',
-    },
-    xhrFields: {
-      withCredentials: true,
     },
   };
 
@@ -376,14 +370,11 @@ const Board = () => {
 
   const option: AjaxGetOption = {
     method: 'GET',
-    'Access-Control-Expose-Headers': '*, Authorization',
+    credentials: 'include',
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
       Authorization: '',
-    },
-    xhrFields: {
-      withCredentials: true,
     },
   };
 

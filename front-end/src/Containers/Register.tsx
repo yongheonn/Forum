@@ -28,14 +28,11 @@ const IdForm = ({
   const option: AjaxPostOption = {
     method: 'POST',
     body: '',
-    'Access-Control-Expose-Headers': '*, Authorization',
+    credentials: 'include',
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
       Authorization: '',
-    },
-    xhrFields: {
-      withCredentials: true,
     },
   };
 
@@ -230,14 +227,11 @@ const NickForm = ({
   const option: AjaxPostOption = {
     method: 'POST',
     body: '',
-    'Access-Control-Expose-Headers': '*, Authorization',
+    credentials: 'include',
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
       Authorization: '',
-    },
-    xhrFields: {
-      withCredentials: true,
     },
   };
 
@@ -319,14 +313,11 @@ const EmailForm = ({
   const option: AjaxPostOption = {
     method: 'POST',
     body: '',
-    'Access-Control-Expose-Headers': '*, Authorization',
+    credentials: 'include',
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
       Authorization: '',
-    },
-    xhrFields: {
-      withCredentials: true,
     },
   };
 
@@ -425,14 +416,11 @@ const RegisterForm = ({ setOnEmailAuth }: { setOnEmailAuth: React.Dispatch<React
   const option: AjaxPostOption = {
     method: 'POST',
     body: JSON.stringify(values),
-    'Access-Control-Expose-Headers': '*, Authorization',
+    credentials: 'include',
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
       Authorization: '',
-    },
-    xhrFields: {
-      withCredentials: true,
     },
   };
 

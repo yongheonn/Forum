@@ -113,14 +113,11 @@ const CreateSubject = () => {
   const option: AjaxPostOption = {
     method: 'POST',
     body: '',
-    'Access-Control-Expose-Headers': '*, Authorization',
+    credentials: 'include',
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
       Authorization: '',
-    },
-    xhrFields: {
-      withCredentials: true,
     },
   };
 
@@ -180,14 +177,11 @@ const UpdateSubject = ({ subject }: { subject: SubjectT }) => {
   const option: AjaxPostOption = {
     method: 'POST',
     body: '',
-    'Access-Control-Expose-Headers': '*, Authorization',
+    credentials: 'include',
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
       Authorization: '',
-    },
-    xhrFields: {
-      withCredentials: true,
     },
   };
 

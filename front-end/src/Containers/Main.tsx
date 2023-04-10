@@ -108,14 +108,11 @@ const SubjectList = () => {
 
   const option: AjaxGetOption = {
     method: 'GET',
-    'Access-Control-Expose-Headers': '*, Authorization',
+    credentials: 'include',
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
       Authorization: '',
-    },
-    xhrFields: {
-      withCredentials: true,
     },
   };
 

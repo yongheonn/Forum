@@ -100,14 +100,11 @@ const CreateBoard = ({ sid }: { sid: string }) => {
   const option: AjaxPostOption = {
     method: 'POST',
     body: '',
-    'Access-Control-Expose-Headers': '*, Authorization',
+    credentials: 'include',
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
       Authorization: '',
-    },
-    xhrFields: {
-      withCredentials: true,
     },
   };
 
@@ -157,14 +154,11 @@ const UpdateBoard = ({ board, bno }: { board: BoardT; bno: string }) => {
   const option: AjaxPostOption = {
     method: 'POST',
     body: '',
-    'Access-Control-Expose-Headers': '*, Authorization',
+    credentials: 'include',
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
       Authorization: '',
-    },
-    xhrFields: {
-      withCredentials: true,
     },
   };
 
