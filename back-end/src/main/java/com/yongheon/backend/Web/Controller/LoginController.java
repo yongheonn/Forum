@@ -75,8 +75,7 @@ public class LoginController {
 			String refreshToken = jwtTokenProvider.generateRefreshToken(data.getId(), ip);
 			Cookie cookie = new Cookie("refreshToken", refreshToken);
 			cookie.setHttpOnly(true);
-			cookie.setSecure(true);
-			cookie.setPath("/");
+			cookie.setPath(api_url + "/");
 			cookie.setDomain("yongheonn.com");
 			cookie.setMaxAge(8200000);
 			response.addCookie(cookie);
