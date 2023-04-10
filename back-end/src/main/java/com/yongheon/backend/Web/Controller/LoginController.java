@@ -76,9 +76,9 @@ public class LoginController {
 			Cookie cookie = new Cookie("refreshToken", refreshToken);
 			cookie.setHttpOnly(true);
 			cookie.setSecure(true);
-			cookie.setPath(api_url + "/ajax/auth/refresh");
-			cookie.setMaxAge(8200000);
+			cookie.setPath("/ajax/auth/refresh/");
 			cookie.setDomain("yongheonn.com");
+			cookie.setMaxAge(8200000);
 			response.addCookie(cookie);
 			String jsonData = new GsonBuilder().serializeNulls().create().toJson(userService.getUser(data.getId()));
 			return new ResponseEntity<>(jsonData, HttpStatus.OK);

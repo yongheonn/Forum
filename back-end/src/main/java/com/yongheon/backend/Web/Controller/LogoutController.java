@@ -24,7 +24,7 @@ public class LogoutController {
             cookie.setMaxAge(0);
             cookie.setSecure(true);
             cookie.setHttpOnly(true);
-            cookie.setPath(api_url + "/ajax/auth/refresh");
+            cookie.setPath("/ajax/auth/refresh/");
             cookie.setDomain("yongheonn.com");
             response.addCookie(cookie);
         } catch (Exception e) {

@@ -30,7 +30,7 @@ public class JwtTokenProvider {
         Date now = new Date();
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(now);
-        calendar.add(Calendar.SECOND, 5);
+        calendar.add(Calendar.SECOND, 10);
         Date expiryDate = calendar.getTime();
 
         Claims claims = Jwts.claims();
@@ -51,7 +51,7 @@ public class JwtTokenProvider {
         Date now = new Date();
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(now);
-        calendar.add(Calendar.SECOND, 5);
+        calendar.add(Calendar.SECOND, 10);
         Date expiryDate = calendar.getTime();
 
         Claims claims = parseAccessClaims(token);

@@ -122,7 +122,7 @@ public class AuthController {
                 cookie.setHttpOnly(true);
                 cookie.setSecure(true);
                 cookie.setMaxAge(0);
-                cookie.setPath(api_url + "/ajax/auth/refresh");
+                cookie.setPath("/ajax/auth/refresh/");
                 response.addCookie(cookie);
                 cookie.setDomain("yongheonn.com");
                 return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);

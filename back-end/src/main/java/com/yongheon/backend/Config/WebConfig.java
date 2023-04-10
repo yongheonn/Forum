@@ -13,9 +13,10 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addMapping("/**")
                 .allowCredentials(true)
                 .allowedMethods(ALLOWED_METHOD_NAMES.split(","))
-                .allowedOrigins("https://yongheonn.com", "https://www.yongheonn.com")
+                .allowedOrigins("https://yongheonn.com")
                 .maxAge(3600)
                 .exposedHeaders("Authorization");
+
         ;
     }
 }
