@@ -120,7 +120,7 @@ public class AuthController {
                 cookie.setMaxAge(0);
                 cookie.setPath("/");
                 response.addCookie(cookie);
-                cookie.setDomain("api.yongheonn.com");
+                cookie.setDomain("yongheonn.com");
                 return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
             }
 

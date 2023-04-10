@@ -66,7 +66,7 @@ public class RegisterController {
 			cookie.setHttpOnly(true);
 			cookie.setSecure(true);
 			cookie.setPath("/ajax/auth/refresh");
-			cookie.setDomain("api.yongheonn.com");
+			cookie.setDomain("yongheonn.com");
 			response.addCookie(cookie);
 			String jsonData = new GsonBuilder().serializeNulls().create().toJson(userService.getUser(data.getId()));
 			return new ResponseEntity<>(jsonData, HttpStatus.OK);
