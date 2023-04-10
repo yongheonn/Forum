@@ -18,6 +18,7 @@ import com.google.gson.GsonBuilder;
 import com.yongheon.backend.Security.JwtTokenProvider;
 import com.yongheon.backend.Web.DTO.RegisterDTO;
 import com.yongheon.backend.Web.Service.RegisterService;
+import com.yongheon.backend.Web.Service.UserService;
 
 @RestController
 @RequestMapping(value = "/ajax/register/*")
@@ -25,6 +26,9 @@ public class RegisterController {
 
 	@Inject
 	private RegisterService service;
+
+	@Inject
+	private UserService userService;
 
 	@Inject
 	private JwtTokenProvider jwtTokenProvider;
@@ -63,8 +67,8 @@ public class RegisterController {
 			cookie.setSecure(true);
 			cookie.setPath("/ajax/auth/refresh");
 			response.addCookie(cookie);
-
-			return new ResponseEntity<>(HttpStatus.OK);
+			String jsonData = new GsonBuilder().serializeNulls().create().toJson(userService.getUser(data.getId()));
+			return new ResponseEntity<>(jsonData, HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new ResponseEntity<>("Server Error", HttpStatus.INTERNAL_SERVER_ERROR);

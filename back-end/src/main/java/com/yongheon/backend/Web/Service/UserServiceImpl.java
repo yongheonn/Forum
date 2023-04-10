@@ -129,7 +129,7 @@ public class UserServiceImpl implements UserService {
         if (memberEmail == null)
             throw new NotFoundException("유효하지 않은 링크입니다.");
         dao.verifyUser(id);
-        redisUtil.deleteData(key);
+        redisUtil.deleteData(id + key);
     }
 
 }
