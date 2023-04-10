@@ -33,10 +33,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
         try {
             String accessToken = request.getHeader("Authorization");
-            if (request.getMethod().equals("OPTIONS")) {
-                filterChain.doFilter(request, response);
-                return;
-            }
             JwtTokenProvider.TokenStatus tokenStatus = jwtTokenProvider.validateAccessToken(accessToken);
 
             if (tokenStatus == JwtTokenProvider.TokenStatus.EXPIRED) {
