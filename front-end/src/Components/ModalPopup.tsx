@@ -59,12 +59,12 @@ const Contents = styled.div`
   padding: 10px;
 `;
 
-type ChartProps = {
+type Props = {
   _handleModal: () => void;
   children: React.ReactNode;
 };
 
-const ModalPopup = ({ _handleModal, children, ...rest }: ChartProps) => (
+const ModalPopup = ({ _handleModal, children, ...rest }: Props) => (
   <Container>
     <ModalBackground onClick={_handleModal} />
     <AiOutlineClose
