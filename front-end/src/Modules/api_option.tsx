@@ -7,6 +7,9 @@ export type AjaxPostOption = {
     'Content-Type': string;
     Authorization: string;
   };
+  xhrFields: {
+    withCredentials: boolean;
+  };
 };
 
 export type AjaxGetOption = {
@@ -16,5 +19,8 @@ export type AjaxGetOption = {
     Accept: string;
     'Content-Type': string;
     Authorization: string;
+  };
+  xhrFields: {
+    withCredentials: boolean;
   };
 };

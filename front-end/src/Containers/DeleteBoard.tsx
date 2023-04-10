@@ -36,6 +36,9 @@ const DeleteBoard = ({
       'Content-Type': 'application/json',
       Authorization: '',
     },
+    xhrFields: {
+      withCredentials: true,
+    },
   };
 
   const clickHandler = () => {

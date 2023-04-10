@@ -23,6 +23,9 @@ const VerifyAuthLink = () => {
       'Content-Type': 'application/json',
       Authorization: '',
     },
+    xhrFields: {
+      withCredentials: true,
+    },
   };
 
   const verifyAuth = async () => {
@@ -60,6 +63,9 @@ const LoadAuthState = () => {
       Accept: 'application/json',
       'Content-Type': 'application/json',
       Authorization: '',
+    },
+    xhrFields: {
+      withCredentials: true,
     },
   };
 

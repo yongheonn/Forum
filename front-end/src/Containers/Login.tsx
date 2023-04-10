@@ -44,6 +44,9 @@ const LoginForm = () => {
       'Content-Type': 'application/json',
       Authorization: '',
     },
+    xhrFields: {
+      withCredentials: true,
+    },
   };
 
   const getToken = async () => {

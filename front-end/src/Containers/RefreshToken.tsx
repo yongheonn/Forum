@@ -12,12 +12,15 @@ const option: AjaxPostOption = {
     'Content-Type': 'application/json',
     Authorization: '',
   },
+  xhrFields: {
+    withCredentials: true,
+  },
 };
 
 export const refreshAccessToken = async (redoFunc: () => Promise<void>) => {
   const accessToken = localStorage.getItem('access_token');
   if (accessToken) option.headers.Authorization = accessToken;
-  const response = await fetch(url + '', option);
+  const response = await fetch(url, option);
 
   if (response.status === 200) {
     const accessToken = response.headers.get('Authorization');

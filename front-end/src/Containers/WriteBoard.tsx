@@ -84,6 +84,9 @@ const CreateBoard = ({ sid }: { sid: string }) => {
       'Content-Type': 'application/json',
       Authorization: '',
     },
+    xhrFields: {
+      withCredentials: true,
+    },
   };
 
   const regiBoard = async () => {
@@ -128,6 +131,9 @@ const UpdateBoard = ({ board, bno }: { board: BoardT; bno: string }) => {
       Accept: 'application/json',
       'Content-Type': 'application/json',
       Authorization: '',
+    },
+    xhrFields: {
+      withCredentials: true,
     },
   };
 

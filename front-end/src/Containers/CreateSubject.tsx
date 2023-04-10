@@ -119,6 +119,9 @@ const CreateSubject = () => {
       'Content-Type': 'application/json',
       Authorization: '',
     },
+    xhrFields: {
+      withCredentials: true,
+    },
   };
 
   const regiSubject = async () => {
@@ -182,6 +185,9 @@ const UpdateSubject = ({ subject }: { subject: SubjectT }) => {
       Accept: 'application/json',
       'Content-Type': 'application/json',
       Authorization: '',
+    },
+    xhrFields: {
+      withCredentials: true,
     },
   };
 

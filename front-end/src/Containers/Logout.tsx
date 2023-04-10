@@ -18,6 +18,9 @@ const Logout = () => {
       'Content-Type': 'application/json',
       Authorization: '',
     },
+    xhrFields: {
+      withCredentials: true,
+    },
   };
 
   const requestLogout = async () => {

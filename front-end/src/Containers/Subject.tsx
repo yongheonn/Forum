@@ -193,6 +193,9 @@ const BoardList = ({ subject, page }: { subject: SubjectT; page: string }) => {
       'Content-Type': 'application/json',
       Authorization: '',
     },
+    xhrFields: {
+      withCredentials: true,
+    },
   };
 
   const [boardList, setBoardList] = useState([] as BoardT[]);
@@ -267,6 +270,9 @@ const Subject = () => {
       Accept: 'application/json',
       'Content-Type': 'application/json',
       Authorization: '',
+    },
+    xhrFields: {
+      withCredentials: true,
     },
   };
 

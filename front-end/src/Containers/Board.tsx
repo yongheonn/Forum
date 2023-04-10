@@ -129,6 +129,9 @@ const Recommend = ({ recommend }: { recommend: number }) => {
       'Content-Type': 'application/json',
       Authorization: '',
     },
+    xhrFields: {
+      withCredentials: true,
+    },
   };
 
   const handleClick = () => {
@@ -254,6 +257,9 @@ const CheckSecret = ({
       'Content-Type': 'application/json',
       Authorization: '',
     },
+    xhrFields: {
+      withCredentials: true,
+    },
   };
 
   const handleKeyInput = (e: ChangeEvent<HTMLInputElement>) => {
@@ -367,6 +373,9 @@ const Board = () => {
       Accept: 'application/json',
       'Content-Type': 'application/json',
       Authorization: '',
+    },
+    xhrFields: {
+      withCredentials: true,
     },
   };
 

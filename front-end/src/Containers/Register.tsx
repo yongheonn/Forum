@@ -34,6 +34,9 @@ const IdForm = ({
       'Content-Type': 'application/json',
       Authorization: '',
     },
+    xhrFields: {
+      withCredentials: true,
+    },
   };
 
   const changeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -233,6 +236,9 @@ const NickForm = ({
       'Content-Type': 'application/json',
       Authorization: '',
     },
+    xhrFields: {
+      withCredentials: true,
+    },
   };
 
   const changeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -318,6 +324,9 @@ const EmailForm = ({
       Accept: 'application/json',
       'Content-Type': 'application/json',
       Authorization: '',
+    },
+    xhrFields: {
+      withCredentials: true,
     },
   };
 
@@ -421,6 +430,9 @@ const RegisterForm = ({ setOnEmailAuth }: { setOnEmailAuth: React.Dispatch<React
       Accept: 'application/json',
       'Content-Type': 'application/json',
       Authorization: '',
+    },
+    xhrFields: {
+      withCredentials: true,
     },
   };
 

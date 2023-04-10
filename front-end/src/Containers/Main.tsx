@@ -114,6 +114,9 @@ const SubjectList = () => {
       'Content-Type': 'application/json',
       Authorization: '',
     },
+    xhrFields: {
+      withCredentials: true,
+    },
   };
 
   const [subjectList, setSubjectList] = useState([] as SubjectT[]);
