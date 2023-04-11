@@ -1,5 +1,5 @@
 import React, { ChangeEvent, Fragment, useContext, useEffect, useRef, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { HorizontalPanel } from '../Components/Panel';
 import { AjaxPostOption } from '../Modules/api_option';
