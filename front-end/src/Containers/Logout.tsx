@@ -31,7 +31,7 @@ const Logout = () => {
 
       window.location.replace('/');
     } else {
-      return '오류가 발생했습니다.';
+      alert('오류가 발생했습니다.');
     }
   };
 
