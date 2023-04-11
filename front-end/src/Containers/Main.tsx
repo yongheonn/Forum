@@ -76,7 +76,7 @@ const SubjectIntro = ({ subject }: { subject: SubjectT }) => {
       <SubjectBox>
         <TitleSpan>{subject.title + ' ' + t('subject')}</TitleSpan>
         <AdminSpan>{subject.admin}</AdminSpan>
-        <DescSpan>{subject.description}</DescSpan>
+        <DescSpan dangerouslySetInnerHTML={{ __html: subject.description }}></DescSpan>
       </SubjectBox>
     </Fragment>
   );
