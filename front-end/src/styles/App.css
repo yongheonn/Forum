@@ -1,3 +1,5 @@
+@charset "utf-8";
+
 .App {
   text-align: center;
 }
@@ -8,8 +10,15 @@
 }
 
 @font-face {
-  font-family: Nanum Gothic;
-  src: local(NanumGothic), local(나눔고딕);
+  font-family: 'Nanum Gothic';
+  src: local('NanumGothic'), local('나눔고딕');
+}
+
+@font-face {
+  font-family: 'NanumBarunGothic';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Nanum Barun Gothic Regular'), local('Nanum Barun Gothic-Regular'), local('NanumBarunGothic Regular');
 }
 
 @media (prefers-reduced-motion: no-preference) {
