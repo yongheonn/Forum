@@ -53,7 +53,6 @@ const DeleteBoard = ({
     if (accessToken) option.headers.Authorization = accessToken;
     const response = await fetch(url, option);
     if (response.status === 200) {
-      console.log('성공');
       setRefreshBoardList(refreshBoardList * -1); // 상태 변화를 통한 새로고침
       navigate('../');
     } else if (response.status === 303) {
@@ -61,9 +60,9 @@ const DeleteBoard = ({
         .then(() => null)
         .catch(() => null);
     } else if (response.status === 400) {
-      console.log('잘못된 요청');
+      alert('잘못된 요청');
     } else if (response.status === 401) {
-      console.log('권한 없음');
+      alert('권한 없음');
     }
   };
 

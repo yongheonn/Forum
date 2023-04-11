@@ -133,18 +133,16 @@ const CreateSubject = () => {
     const response = await fetch(url, option);
     if (response.status === 200) {
       const sid = (await response.json()) as string;
-      console.log('성공');
       setRefreshSubject(refreshSubject * -1); // 상태 변화를 통한 새로고침
-      console.log('성공2');
       navigate('../board/' + sid);
     } else if (response.status === 303) {
       refreshAccessToken(regiSubject)
         .then(() => null)
         .catch(() => null);
     } else if (response.status === 400) {
-      console.log('잘못된 요청');
+      alert('잘못된 요청');
     } else if (response.status === 401) {
-      console.log('권한 없음');
+      alert('권한 없음');
     }
   };
 
@@ -196,18 +194,16 @@ const UpdateSubject = ({ subject }: { subject: SubjectT }) => {
     if (accessToken) option.headers.Authorization = accessToken;
     const response = await fetch(url, option);
     if (response.status === 200) {
-      console.log('성공');
       setRefreshSubject(refreshSubject * -1); // 상태 변화를 통한 새로고침
-      console.log('성공2');
       navigate('../');
     } else if (response.status === 303) {
       refreshAccessToken(updateSubject)
         .then(() => null)
         .catch(() => null);
     } else if (response.status === 400) {
-      console.log('잘못된 요청');
+      alert('잘못된 요청');
     } else if (response.status === 401) {
-      console.log('권한 없음');
+      alert('권한 없음');
     }
   };
 

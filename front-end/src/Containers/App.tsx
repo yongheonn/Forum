@@ -13,14 +13,11 @@ import { SetLangDefault } from './LangSetting';
 import BottomPanel from './BottomPanel';
 import { CreateSubject } from './CreateSubject';
 
-const deleteConsole = () => {
-  if (process.env.NODE_ENV === 'production') {
-    console.log = () => null;
-    console.warn = () => null;
-    console.error = () => null;
-  }
-};
-
+if (process.env.REACT_APP_ENV === 'production') {
+  console.log = () => null;
+  console.warn = () => null;
+  console.error = () => null;
+}
 const MainPanel = styled.div`
   max-width: 1300px;
   display: grid;
