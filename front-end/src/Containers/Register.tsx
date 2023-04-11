@@ -441,7 +441,7 @@ const RegisterForm = ({ setOnEmailAuth }: { setOnEmailAuth: React.Dispatch<React
       localStorage.setItem('auth', auth);
       await emailAuth();
     } else if (response.status === 400) {
-      console.error('400 err');
+      alert('오류가 발생했습니다.');
     }
   };
 
