@@ -7,7 +7,6 @@ import Login from './Login';
 import Register from './Register';
 import { DropDown, Ul, Li } from '../Components/DropDown';
 import Logout from './Logout';
-import { refreshAccessToken } from './RefreshToken';
 
 const LoginDiv = styled.div`
   padding: 0px 4px;
