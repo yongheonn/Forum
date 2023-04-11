@@ -1,4 +1,4 @@
-import React, { ChangeEvent, Fragment, useContext, useEffect, useRef, useState } from 'react';
+import React, { ChangeEvent, Fragment, useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { HorizontalPanel } from '../Components/Panel';
