@@ -5,7 +5,6 @@ import '../styles/App.css';
 import { AiOutlineUser } from 'react-icons/ai';
 import Login from './Login';
 import Register from './Register';
-import { AjaxPostOption } from '../Modules/api_option';
 import { DropDown, Ul, Li } from '../Components/DropDown';
 import Logout from './Logout';
 import { refreshAccessToken } from './RefreshToken';
