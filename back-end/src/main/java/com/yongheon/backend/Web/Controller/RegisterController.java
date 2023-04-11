@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -66,12 +67,16 @@ public class RegisterController {
 				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 
 			String refreshToken = jwtTokenProvider.generateRefreshToken(data.getId(), ip);
-			Cookie cookie = new Cookie("refreshToken", refreshToken);
-			cookie.setHttpOnly(true);
-			cookie.setSecure(true);
-			cookie.setPath("/ajax/auth/refresh/");
-			cookie.setDomain("yongheonn.com");
-			response.addCookie(cookie);
+			ResponseCookie cookie = ResponseCookie.from("refreshToken", refreshToken)
+					.path("/ajax/auth/refresh")
+					.sameSite("None")
+					.domain("yongheonn.com")
+					.httpOnly(true)
+					.secure(true)
+					.maxAge(8200000)
+					.build();
+
+			response.addHeader("Set-Cookie", cookie.toString());
 			String jsonData = new GsonBuilder().serializeNulls().create().toJson(userService.getUser(data.getId()));
 			return new ResponseEntity<>(jsonData, HttpStatus.OK);
 		} catch (Exception e) {
