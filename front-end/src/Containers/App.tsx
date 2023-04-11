@@ -1,7 +1,7 @@
 import React, { createContext, Dispatch, Fragment, SetStateAction, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
-import { matchPath, Route, Routes, useParams } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import '../styles/App.css';
 import { isMobile } from 'react-device-detect';
 import Setting from './Setting';
