@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
-import { AiOutlineSetting } from 'react-icons/ai';
 import { Link } from 'react-router-dom';
 import { HorizontalPanel, VerticalPanel } from '../Components/Panel';
 import AccountMenu from './AccountMenu';
