@@ -155,6 +155,8 @@ const Recommend = ({ recommend }: { recommend: number }) => {
         .catch(() => null);
     } else if (response.status === 400) {
       alert('이미 추천을 했습니다.');
+    } else if (response.status === 401) {
+      alert('로그인 해주세요.');
     }
   };
 
