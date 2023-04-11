@@ -117,7 +117,6 @@ const CreateBoard = ({ sid }: { sid: string }) => {
     const response = await fetch(url, option);
     if (response.status === 200) {
       const bno = (await response.json()) as string;
-      console.log('성공');
       setRefreshBoard(refreshBoard * -1); // 상태 변화를 통한 새로고침
       navigate('../' + bno);
     } else if (response.status === 303) {
@@ -125,9 +124,9 @@ const CreateBoard = ({ sid }: { sid: string }) => {
         .then(() => null)
         .catch(() => null);
     } else if (response.status === 400) {
-      console.log('잘못된 요청');
+      alert('잘못된 요청');
     } else if (response.status === 401) {
-      console.log('권한 없음');
+      alert('권한 없음');
     }
   };
 
@@ -170,18 +169,16 @@ const UpdateBoard = ({ board, bno }: { board: BoardT; bno: string }) => {
     if (accessToken) option.headers.Authorization = accessToken;
     const response = await fetch(url, option);
     if (response.status === 200) {
-      console.log('성공');
       setRefreshBoard(refreshBoard * -1); // 상태 변화를 통한 새로고침
-      console.log('성공2');
       navigate('../');
     } else if (response.status === 303) {
       refreshAccessToken(updateBoard)
         .then(() => null)
         .catch(() => null);
     } else if (response.status === 400) {
-      console.log('잘못된 요청');
+      alert('잘못된 요청');
     } else if (response.status === 401) {
-      console.log('권한 없음');
+      alert('권한 없음');
     }
   };
 
