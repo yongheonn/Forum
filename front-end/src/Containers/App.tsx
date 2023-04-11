@@ -10,7 +10,6 @@ import { VerifyAuthLink } from './WaitEmailAuth';
 import { Main } from './Main';
 import { SetLangDefault } from './LangSetting';
 import BottomPanel from './BottomPanel';
-import { CreateSubject } from './CreateSubject';
 
 if (process.env.REACT_APP_ENV === 'production') {
   console.log = () => null;
