@@ -7,6 +7,11 @@
   pointer-events: none;
 }
 
+@font-face {
+  font-family: Nanum Gothic;
+  src: local(NanumGothic), local(나눔고딕);
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
