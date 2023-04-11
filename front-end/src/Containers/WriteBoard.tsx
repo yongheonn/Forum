@@ -87,7 +87,6 @@ const ContentPanel = styled.div`
 
 const CreateBoard = ({ sid }: { sid: string }) => {
   const url = apiUrl + '/ajax/board/create';
-  const location = useLocation();
   const navigate = useNavigate();
   const { refreshBoard, setRefreshBoard } = useContext(MainContext); // board 새로고침을 위한
 
