@@ -61,10 +61,10 @@ const IdForm = ({
   };
 
   const isValidRegExp = (value: string) => {
-    const regExp = /^[a-z0-9_-]{5,20}$/;
+    const regExp = /^[a-z0-9_-]{6,20}$/;
     const isMatch = regExp.test(value);
     if (isMatch) return true;
-    setMsg('5~20자의 영문 소문자, 숫자와 특수기호(_),(-)만 사용 가능합니다.');
+    setMsg('6~20자의 영문 소문자, 숫자와 특수기호(_),(-)만 사용 가능합니다.');
 
     return false;
   };

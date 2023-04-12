@@ -230,7 +230,7 @@ const Comment = () => {
   const { bno } = useParams();
   return (
     <Fragment>
-      <Link to="">{bno}</Link>
+      <span>댓글 구현 예정</span>
     </Fragment>
   );
 };
