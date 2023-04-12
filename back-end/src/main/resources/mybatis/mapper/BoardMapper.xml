@@ -57,7 +57,7 @@
 	</update>
 
 	<update id="updateBoard">
-		update board set title = #{title}, content = #{content}, pw=#{pw} 
+		update board set title = #{title}, content = #{content}, pw=#{pw}, update_date=CURRENT_TIMESTAMP
 		where bno = #{bno};
 	</update>
 
