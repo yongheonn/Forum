@@ -1,4 +1,4 @@
-import React, { ChangeEvent, Fragment, useContext, useEffect, useState } from 'react';
+import React, { ChangeEvent, Fragment, useContext, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { HorizontalPanel } from '../Components/Panel';
@@ -65,14 +65,20 @@ const Pw = styled.span`
   border-color: #000;
   border-right-width: 1px;
   border-right-style: solid;
-  padding: 8px;
+  padding: 12px;
   white-space: nowrap;
 `;
 
-const PwInput = styled.input`
+const PwInput = styled(HorizontalPanel)`
   padding-left: 8px;
   border-width: 0px;
-  width: 100%;
+`;
+
+const PwError = styled.span`
+  color: red;
+  border-color: #000;
+  padding: 8px;
+  margin-left: 12px;
 `;
 
 const ContentPanel = styled.div`
@@ -184,6 +190,28 @@ const UpdateBoard = ({ board, bno }: { board: BoardT; bno: string }) => {
   return <WriteBoard boardInput={boardInput} actionBoard={updateBoard} setBoardInput={setBoardInput} />;
 };
 
+const KeyInput = styled.input`
+  outline: none;
+  cursor: none;
+  width: 1px;
+  height: 1px;
+  border: none;
+  font-size: 1px;
+  color: transparent;
+`;
+
+const Key = styled.div`
+  line-height: 50px;
+  text-align: center;
+  font-size: 30px;
+  border-size: 1px;
+  border-style: solid;
+  border-color: ${({ selected }: { selected: boolean }) => (selected ? 'blue' : 'black')};
+  color: ${({ selected }: { selected: boolean }) => (selected ? 'blue' : 'black')};
+  width: 50px;
+  height: 50px;
+`;
+
 const WriteBoard = ({
   boardInput,
   actionBoard,
@@ -195,14 +223,24 @@ const WriteBoard = ({
 }) => {
   const [content, setContent] = useState<string>(boardInput.content);
   const [pwCheck, setPwCheck] = useState<boolean>(boardInput.pw !== null);
-  const [tempPw, setTempPw] = useState<string>(boardInput.pw ? boardInput.pw : '');
   const pwOptions = ['자신만 볼 수 있게', '코드로 일부 공개'];
   const [selectedOption, setSelectedOption] = useState<string>(
     boardInput.pw === 'nonpw' || boardInput.pw === null ? pwOptions[0] : pwOptions[1]
   );
+  const [pw, setPw] = useState<string[]>(['', '', '', '', '', '']);
+  const [selectedKey, setSelectedKey] = useState(0);
+  const [pwError, setPwError] = useState<string>('');
+  const inputFocus = useRef<HTMLInputElement | null>(null);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (pwCheck && selectedOption === '코드로 일부 공개') {
+      const isValid = !pw.some(pw => pw === '');
+      if (!isValid) {
+        setPwError('비밀번호를 영문 대소문자 및 숫자로 6글자를 채워주세요');
+        return;
+      }
+    }
     actionBoard()
       .then(() => null)
       .catch(() => null);
@@ -227,7 +265,7 @@ const WriteBoard = ({
       else
         setBoardInput({
           ...boardInput,
-          pw: tempPw,
+          pw: pw.join(''),
         });
     }
   };
@@ -243,7 +281,7 @@ const WriteBoard = ({
     else
       setBoardInput({
         ...boardInput,
-        pw: tempPw,
+        pw: pw.join(''),
       });
   };
 
@@ -253,12 +291,30 @@ const WriteBoard = ({
     </option>
   ));
 
-  const handlePwChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setTempPw(e.target.value);
-    setBoardInput({
-      ...boardInput,
-      pw: e.target.value,
-    });
+  const handleKeyInput = (e: ChangeEvent<HTMLInputElement>) => {
+    const regExp = /^[0-9a-zA-Z]$/;
+    const inputValue = e.currentTarget.value;
+    const pwLen = pw.filter(pw => pw !== '').length;
+
+    const isValid: boolean = regExp.test(inputValue[inputValue.length - 1]);
+    const isDelete: boolean = inputValue.length === pwLen - 1;
+    if (!isValid && !isDelete) return;
+    if (isDelete && pw[selectedKey] === '' && selectedKey >= 1) setSelectedKey(selectedKey - 1);
+    else if (isDelete) {
+      const tempPw = [...pw];
+      tempPw[selectedKey] = '';
+      setPw(tempPw);
+    } else if (isValid) {
+      const tempPw = [...pw];
+      tempPw[selectedKey] = inputValue[inputValue.length - 1];
+      setPw(tempPw);
+      if (selectedKey <= 4) setSelectedKey(selectedKey + 1);
+    }
+  };
+
+  const handleKeyClick = (index: number) => {
+    inputFocus.current?.focus();
+    setSelectedKey(index);
   };
 
   const handleContentInput = (e: React.ChangeEvent<HTMLDivElement>) => {
@@ -270,7 +326,19 @@ const WriteBoard = ({
 
   useEffect(() => {
     if (boardInput.content === '' || boardInput.content === undefined) setContent('<p><br /></p>');
+    if (boardInput.pw && boardInput.pw !== '' && boardInput.pw !== 'nonpw') {
+      const tempPw: string = boardInput.pw;
+
+      setPw(tempPw.split(''));
+    }
   }, []);
+
+  useEffect(() => {
+    setBoardInput({
+      ...boardInput,
+      pw: pw.join(''),
+    });
+  }, [pw]);
 
   return (
     <form onSubmit={handleSubmit}>
@@ -289,13 +357,35 @@ const WriteBoard = ({
               {setPwOptions}
             </select>
             {selectedOption === '코드로 일부 공개' ? (
-              <PwInput
-                id="pw"
-                maxLength={6}
-                value={tempPw}
-                onChange={handlePwChange}
-                disabled={selectedOption !== '코드로 일부 공개'}
-              />
+              <Fragment>
+                <PwInput>
+                  <Key selected={selectedKey === 0} key={0} onClick={() => handleKeyClick(0)}>
+                    {pw[0]}
+                  </Key>
+                  <Key selected={selectedKey === 1} key={1} onClick={() => handleKeyClick(1)}>
+                    {pw[1]}
+                  </Key>
+                  <Key selected={selectedKey === 2} key={2} onClick={() => handleKeyClick(2)}>
+                    {pw[2]}
+                  </Key>
+                  <Key selected={selectedKey === 3} key={3} onClick={() => handleKeyClick(3)}>
+                    {pw[3]}
+                  </Key>
+                  <Key selected={selectedKey === 4} key={4} onClick={() => handleKeyClick(4)}>
+                    {pw[4]}
+                  </Key>
+                  <Key selected={selectedKey === 5} key={5} onClick={() => handleKeyClick(5)}>
+                    {pw[5]}
+                  </Key>
+                </PwInput>
+                <PwError>{pwError}</PwError>
+                <KeyInput
+                  ref={inputFocus}
+                  onChange={handleKeyInput}
+                  value={pw.join('')}
+                  autoFocus
+                  disabled={selectedOption !== '코드로 일부 공개'}></KeyInput>
+              </Fragment>
             ) : null}
           </Fragment>
         ) : null}

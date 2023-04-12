@@ -268,7 +268,6 @@ const CheckSecret = ({
     const regExp = /^[0-9a-zA-Z]$/;
     const inputValue = e.currentTarget.value;
     const pwLen = pw.filter(pw => pw !== '').length;
-
     const isValid: boolean = regExp.test(inputValue[inputValue.length - 1]);
     const isDelete: boolean = inputValue.length === pwLen - 1;
     if (!isValid && !isDelete) return;
