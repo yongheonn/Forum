@@ -3,6 +3,7 @@ package com.yongheon.backend.Config;
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -31,6 +32,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
+    @Value("${front-url}")
+    private String front_url;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
@@ -57,7 +61,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.addAllowedOrigin("https://yongheonn.com");
+        configuration.addAllowedOrigin(front_url);
         configuration.setAllowedMethods(Arrays.asList("HEAD", "GET", "POST", "OPTIONS", "PATCH"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Accept", "Content-Type"));
         configuration.addExposedHeader("Authorization");
