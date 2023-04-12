@@ -87,20 +87,29 @@ public class AuthController {
             HttpServletResponse response, @CookieValue(value = "refreshToken") String refreshToken) throws IOException {
         try {
             String ip = request.getHeader("X-Forwarded-For");
+            if (ip != null) {
+                ip = ip.split(",")[0];
+                System.out.println("X-Forwarded-For ip: " + ip);
+            }
             if (ip == null) {
                 ip = request.getHeader("Proxy-Client-IP");
+                System.out.println("Proxy-Client-IP ip: " + ip);
             }
             if (ip == null) {
                 ip = request.getHeader("WL-Proxy-Client-IP"); // 웹로직
+                System.out.println("WL-Proxy-Client-IP ip: " + ip);
             }
             if (ip == null) {
                 ip = request.getHeader("HTTP_CLIENT_IP");
+                System.out.println("HTTP_CLIENT_IP ip: " + ip);
             }
             if (ip == null) {
                 ip = request.getHeader("HTTP_X_FORWARDED_FOR");
+                System.out.println("HTTP_X_FORWARDED_FOR ip: " + ip);
             }
             if (ip == null) {
                 ip = request.getRemoteAddr();
+                System.out.println("getRemoteAddr ip: " + ip);
             }
 
             String accessToken = request.getHeader("Authorization");

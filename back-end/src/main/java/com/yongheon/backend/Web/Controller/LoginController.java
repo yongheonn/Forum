@@ -57,7 +57,11 @@ public class LoginController {
 			response.setHeader("Authorization", accessToken);
 
 			String ip = request.getHeader("X-Forwarded-For");
-			System.out.println("X-Forwarded-For ip: " + ip);
+
+			if (ip != null) {
+				ip = ip.split(",")[0];
+				System.out.println("X-Forwarded-For ip: " + ip);
+			}
 			if (ip == null) {
 				ip = request.getHeader("Proxy-Client-IP");
 				System.out.println("Proxy-Client-IP ip: " + ip);

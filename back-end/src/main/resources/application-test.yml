@@ -1,9 +1,0 @@
-spring:
-  config:
-    import:
-      - classpath:/config/db-config-test.yml
-      - classpath:/config/db-local-config-test.yml
-    activate:
-      on-profile: test
-
-testing123: abcdefg
