@@ -128,7 +128,7 @@ public class BoardController {
         try {
             BoardDTO board = boardService.getBoard(boardUpdated.getBno());
             if (!board.getUser_id().equals(id)) // 작성자인 경우가 아닐 때
-                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
             if (!boardService.regExpContent(boardUpdated))
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             boardService.updateBoard(boardUpdated);
