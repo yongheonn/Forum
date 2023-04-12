@@ -15,8 +15,6 @@ public class WebConfig implements WebMvcConfigurer {
                 .allowedMethods(ALLOWED_METHOD_NAMES.split(","))
                 .allowedOrigins("https://yongheonn.com")
                 .maxAge(3600)
-                .exposedHeaders("Authorization");
-
-        ;
+                .allowedHeaders("Authorization", "Accept", "Content-Type");
     }
 }
