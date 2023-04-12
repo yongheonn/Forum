@@ -129,7 +129,6 @@ public class JwtTokenProvider {
                 .setSigningKey(REFRESH_KEY)
                 .parseClaimsJws(token)
                 .getBody();
-        System.out.println(claims.getExpiration());
 
         return (String) claims.get("ip");
     }
@@ -159,8 +158,12 @@ public class JwtTokenProvider {
 
     public TokenStatus validateRefreshToken(String token, String clientIp) {
         try {
-            if (getIpFromRefreshToken(token).equals(clientIp))
+            String tokenIp = getIpFromRefreshToken(token);
+            if (tokenIp.equals(clientIp))
                 return TokenStatus.VALID;
+            log.error("ip conflict client ip: " + clientIp + " tokenIp: " + tokenIp);
+            return TokenStatus.INVALID;
+
         } catch (SignatureException ex) {
             log.error("Invalid Refresh signature");
             return TokenStatus.INVALID;
@@ -177,7 +180,7 @@ public class JwtTokenProvider {
             log.error("Refresh claims string is empty.");
             return TokenStatus.EMPTY;
         }
-        return TokenStatus.INVALID;
+
     }
 
 }

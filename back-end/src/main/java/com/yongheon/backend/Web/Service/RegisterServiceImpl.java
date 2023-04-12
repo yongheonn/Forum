@@ -17,7 +17,7 @@ public class RegisterServiceImpl implements RegisterService {
 
     @Override
     public Boolean idRegExp(String id) throws Exception {
-        String regExp = "^[a-z0-9_-]{5,20}$";
+        String regExp = "^[a-z0-9_-]{6,20}$";
         return Pattern.matches(regExp, id);
     }
 

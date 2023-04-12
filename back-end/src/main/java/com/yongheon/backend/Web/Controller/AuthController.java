@@ -104,8 +104,6 @@ public class AuthController {
             }
 
             String accessToken = request.getHeader("Authorization");
-
-            System.out.println("refreshToken: " + refreshToken);
             JwtTokenProvider.TokenStatus tokenStatus = jwtTokenProvider.validateRefreshToken(refreshToken, ip);
             /*
              * 리프레시 토큰이 유효할 때, 액세스 토큰 재발급
