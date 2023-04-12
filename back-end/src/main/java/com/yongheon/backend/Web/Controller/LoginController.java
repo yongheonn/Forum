@@ -57,20 +57,26 @@ public class LoginController {
 			response.setHeader("Authorization", accessToken);
 
 			String ip = request.getHeader("X-Forwarded-For");
+			System.out.println("X-Forwarded-For ip: " + ip);
 			if (ip == null) {
 				ip = request.getHeader("Proxy-Client-IP");
+				System.out.println("Proxy-Client-IP ip: " + ip);
 			}
 			if (ip == null) {
 				ip = request.getHeader("WL-Proxy-Client-IP"); // 웹로직
+				System.out.println("WL-Proxy-Client-IP ip: " + ip);
 			}
 			if (ip == null) {
 				ip = request.getHeader("HTTP_CLIENT_IP");
+				System.out.println("HTTP_CLIENT_IP ip: " + ip);
 			}
 			if (ip == null) {
 				ip = request.getHeader("HTTP_X_FORWARDED_FOR");
+				System.out.println("HTTP_X_FORWARDED_FOR ip: " + ip);
 			}
 			if (ip == null) {
 				ip = request.getRemoteAddr();
+				System.out.println("getRemoteAddr ip: " + ip);
 			}
 
 			String refreshToken = jwtTokenProvider.generateRefreshToken(data.getId(), ip);
