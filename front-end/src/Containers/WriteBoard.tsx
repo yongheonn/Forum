@@ -59,6 +59,7 @@ const PwPanel = styled(HorizontalPanel)`
   border-width: 1px;
   border-style: solid;
   margin-bottom: 20px;
+  flex-wrap: wrap;
 `;
 
 const Pw = styled.span`
