@@ -15,7 +15,7 @@
 - Mysql
 - MyBatis
 - smtp mail
-- JWS Token
+- JWT
 
 
 ### Cloud
