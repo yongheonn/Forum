@@ -29,20 +29,21 @@ Cloud Flare
 
 ## 개발 고민
 
-# 리프레시 토큰
+### 리프레시 토큰
+
 https://yongheonn.github.io/posts/jwt_thinking_2/  
 https://yongheonn.github.io/posts/jwt_thinking_3/  
 
-# 캐시 최적화
+### 캐시 최적화
 
 https://yongheonn.github.io/posts/cache_setting/  
 
-# mysql 인덱스 최적화
+### mysql 인덱스 최적화
 
 https://yongheonn.github.io/posts/db_thinking_1/  
 https://yongheonn.github.io/posts/db_thinking_2/  
 
-# 기타
+### 기타
 
 https://yongheonn.github.io/posts/email_authentication/  
 https://yongheonn.github.io/posts/board-secret/  
