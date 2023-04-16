@@ -13,6 +13,7 @@
 - Spring Boot
 - Redis
 - Mysql
+- MyBatis
 - smtp mail
 - JWS Token
 
