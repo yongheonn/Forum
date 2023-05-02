@@ -44,6 +44,23 @@ const Blog = styled.a`
   margin-left: 10px;
 `;
 
+const Career = styled.a`
+  color: blue !important;
+  &:link {
+    text-decoration: none;
+  }
+
+  &:visited {
+    text-decoration: none;
+  }
+
+  &:hover {
+    text-decoration: underline;
+  }
+
+  margin-left: 10px;
+`;
+
 const BottomPanel = () => {
   const { t } = useTranslation();
   const temp = () => {
@@ -55,7 +72,8 @@ const BottomPanel = () => {
       <Email>연락 이메일:&nbsp; yongheonn99@gmail.com</Email>
       <HorizontalPanel style={{ margin: 'auto' }}>
         <Github href={'https://github.com/yongheonn/Forum'}>GitHub</Github>
-        <Blog href={'https://yongheonn.github.io/'}>Blog</Blog>
+        <Blog href={'https://yongheonn.github.io'}>Blog</Blog>
+        <Career href={'https://career.yongheonn.com'}>Career</Career>
       </HorizontalPanel>
     </NavBar>
   );
