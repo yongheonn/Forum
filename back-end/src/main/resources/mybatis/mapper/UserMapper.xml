@@ -24,6 +24,10 @@
 		select nick from user where id = #{id}
 	</select>
 
+	<select id="isRegistered" resultType="com.yongheon.backend.Web.DTO.UserDTO">
+		select email, auth from user where email = #{email}
+	</select>
+
 	<update id="verifyUser">
 		update user set auth=2 where id=#{id}
 	</update>

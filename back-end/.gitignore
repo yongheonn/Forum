@@ -6,11 +6,9 @@ build/
 !**/src/test/**/build/
 
 ### properties ###
-db-local-config.yml
-db-local-config-test.yml
 application.yml
+application-oauth.yml
 application.properties
-application-test.yml
 
 ### STS ###
 .apt_generated

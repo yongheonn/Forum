@@ -9,4 +9,7 @@ import com.yongheon.backend.Web.DTO.LoginDTO;
 @Repository
 public interface LoginDAO {
     public String login(LoginDTO loginDTO);
+
+    public String loginOAuth(String email);
+
 }

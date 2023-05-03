@@ -15,4 +15,6 @@ public interface RegisterDAO {
     public String isExistEmail(String email) throws Exception;
 
     public Boolean register(RegisterDTO registerDTO) throws Exception;
+
+    public Boolean registerOAuth(RegisterDTO registerDTO) throws Exception;
 }

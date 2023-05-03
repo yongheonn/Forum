@@ -8,4 +8,8 @@
 		select id from user where id = #{id} and pw = #{pw}
 	</select>
 
+	<select id="loginOAuth" resultType="String">
+		select id from user where email = #{email}
+	</select>
+
 </mapper>

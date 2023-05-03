@@ -33,4 +33,20 @@
 			1
 	 	) 
 	</insert>
+
+	<insert id="registerOAuth">
+	 	INSERT INTO 
+	 	user(
+	 		id,
+	 		nick,
+	 		email,
+			auth
+	 	) 
+	 	VALUES(
+	 		#{id},
+	 		#{nick},
+	 		#{email},
+			2
+	 	) 
+	</insert>
 </mapper>
