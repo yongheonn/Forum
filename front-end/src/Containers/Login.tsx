@@ -1,6 +1,6 @@
 import React, { Dispatch, ErrorInfo, Fragment, SetStateAction, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { Navigate, useNavigate, useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import '../styles/App.css';
 import { useTranslation } from 'react-i18next';
 import ModalPopup from '../Components/ModalPopup';
