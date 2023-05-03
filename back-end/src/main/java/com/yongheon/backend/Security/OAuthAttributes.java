@@ -4,7 +4,9 @@ import java.util.Map;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Getter
 @Builder
 public class OAuthAttributes {
@@ -37,7 +39,6 @@ public class OAuthAttributes {
         Map<String, Object> response = (Map<String, Object>) attributes.get("response");
 
         return OAuthAttributes.builder()
-                .name((String) response.get("name"))
                 .email((String) response.get("email"))
                 .attributes(response)
                 .nameAttributeKey(userNameAttributeName)
@@ -45,9 +46,10 @@ public class OAuthAttributes {
     }
 
     private static OAuthAttributes ofKakao(String userNameAttributeName, Map<String, Object> attributes) {
+        long id = (long) attributes.get("id");
         Map<String, Object> response = (Map<String, Object>) attributes.get("kakao_account");
-        Map<String, Object> account = (Map<String, Object>) attributes.get("profile");
-
+        Map<String, Object> account = (Map<String, Object>) response.get("profile");
+        response.put("id", id); // attributes에 id 키가 있어야 함
         return OAuthAttributes.builder()
                 .name((String) account.get("nickname"))
                 .email((String) response.get("email"))

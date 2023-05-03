@@ -3,10 +3,12 @@ package com.yongheon.backend.Security;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseCookie;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
 import com.google.gson.GsonBuilder;
@@ -19,17 +21,24 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.UUID;
 
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
+public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
     private final RegisterDAO registerDAO;
     private final LoginDAO loginDAO;
-    private final UserService userService;
     private final JwtTokenProvider jwtTokenProvider;
+
+    @Value("${front-url}")
+    private String frontUrl;
+
+    @Value("${domain}")
+    private String domain;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
@@ -37,16 +46,22 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
         log.info("OAuth2 Login 성공!");
         try {
             DefaultOAuth2User oAuth2User = (DefaultOAuth2User) authentication.getPrincipal();
+            log.info(oAuth2User.toString());
+            // User의 Role이 GUEST일 경우 처음 요청한 회원이므로 회원가입
+            if (oAuth2User.getAuthorities().toArray()[0].toString() == "ROLE_GUEST") {
+                log.info("회원가입 시도");
 
-            // User의 Role이 GUEST일 경우 처음 요청한 회원이므로 회원가입 페이지로 리다이렉트
-            if (oAuth2User.getAuthorities().toArray()[0].toString() == "Role.GUEST") {
-                String id = "id_" + UUID.randomUUID().toString();
-                String nick = "user_" + UUID.randomUUID().toString();
-                registerDAO.registerOAuth(new RegisterDTO(id,
-                        nick, oAuth2User.getAttribute("email")));
+                String id = UUID.randomUUID().toString();
+                String nick = UUID.randomUUID().toString();
+                id = id.replaceAll("-", "");
+                nick = nick.replaceAll("-", "");
+                id = "id_" + id.substring(0, 15);
+                nick = "user_" + nick.substring(0, 15);
+                if (!tryRegister(id, nick, oAuth2User, 0))
+                    getRedirectStrategy().sendRedirect(request, response, frontUrl + "/auth/oauth/redirect/error");
                 String accessToken = jwtTokenProvider.generateAccessToken(id,
-                        "Role.GUEST");
-                response.setHeader("Authorization", accessToken);
+                        "ROLE_GUEST");
+                String url = frontUrl + "/auth/oauth/redirect?access_token=" + accessToken;
 
                 String ip = request.getHeader("X-Forwarded-For");
 
@@ -80,7 +95,7 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
                 ResponseCookie cookie = ResponseCookie.from("refreshToken", refreshToken)
                         .path("/ajax/auth/refresh")
                         .sameSite("None")
-                        .domain("yongheonn.com")
+                        .domain(domain)
                         .httpOnly(true)
                         .secure(true)
                         .maxAge(8200000)
@@ -90,24 +105,39 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
                 response.setStatus(200);
                 response.setContentType("application/json");
 
-                String jsonData = new GsonBuilder().serializeNulls().create().toJson(userService.getUser(id));
-                response.getWriter().write(jsonData);
+                getRedirectStrategy().sendRedirect(request, response, url);
             } else {
-                loginSuccess(request, response, oAuth2User); // 로그인에 성공한 경우 access, refresh 토큰 생성
+                loginSuccess(request, response, oAuth2User);
             }
         } catch (Exception e) {
-            //
+            e.printStackTrace();
         }
 
     }
 
-    // TODO : 소셜 로그인 시에도 무조건 토큰 생성하지 말고 JWT 인증 필터처럼 RefreshToken 유/무에 따라 다르게 처리해보기
+    private Boolean tryRegister(String id, String nick, DefaultOAuth2User oAuth2User, int tryNum) {
+        try {
+            if (tryNum == 5)
+                return false;
+            registerDAO.registerOAuth(new RegisterDTO(id,
+                    nick, oAuth2User.getAttribute("email")));
+            return true;
+
+        } catch (SQLIntegrityConstraintViolationException e) {
+            e.printStackTrace();
+            return tryRegister(id, nick, oAuth2User, tryNum++);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     private void loginSuccess(HttpServletRequest request, HttpServletResponse response, DefaultOAuth2User oAuth2User)
             throws IOException {
         String id = loginDAO.loginOAuth(oAuth2User.getAttribute("email"));
         String accessToken = jwtTokenProvider.generateAccessToken(id,
-                "Role.GUEST");
-        response.setHeader("Authorization", accessToken);
+                "ROLE_USER_CERT");
+        String url = frontUrl + "/auth/oauth/redirect?access_token=" + accessToken;
 
         String ip = request.getHeader("X-Forwarded-For");
 
@@ -141,7 +171,7 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
         ResponseCookie cookie = ResponseCookie.from("refreshToken", refreshToken)
                 .path("/ajax/auth/refresh")
                 .sameSite("None")
-                .domain("yongheonn.com")
+                .domain(domain)
                 .httpOnly(true)
                 .secure(true)
                 .maxAge(8200000)
@@ -151,7 +181,6 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
         response.setStatus(200);
         response.setContentType("application/json");
 
-        String jsonData = new GsonBuilder().serializeNulls().create().toJson(userService.getUser(id));
-        response.getWriter().write(jsonData);
+        getRedirectStrategy().sendRedirect(request, response, url);
     }
 }

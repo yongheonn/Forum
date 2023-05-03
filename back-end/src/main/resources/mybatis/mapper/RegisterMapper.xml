@@ -38,12 +38,14 @@
 	 	INSERT INTO 
 	 	user(
 	 		id,
+			pw,
 	 		nick,
 	 		email,
 			auth
 	 	) 
 	 	VALUES(
 	 		#{id},
+			"oauth",
 	 		#{nick},
 	 		#{email},
 			2

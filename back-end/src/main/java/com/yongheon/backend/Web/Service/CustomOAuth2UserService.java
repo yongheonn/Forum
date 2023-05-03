@@ -27,8 +27,6 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
     @Inject
     private UserDAO userDAO;
 
-    private RegisterDAO registerDAO;
-
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
         OAuth2UserService<OAuth2UserRequest, OAuth2User> delegate = new DefaultOAuth2UserService();
@@ -52,7 +50,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
     private String saveOrUpdate(OAuthAttributes attributes) {
         UserDTO userDTO = userDAO.isRegistered(attributes.getEmail());
 
-        if (userDTO.getEmail() == null)
+        if (userDTO == null)
             return "ROLE_GUEST";
         if (userDTO.getAuth() == 1)
             return "ROLE_USER_NONCERT";
@@ -62,20 +60,6 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
             return "ROLE_ADMIN";
 
         return "ROLE_GUEST";
-
-    }
-
-    private String tryRegister(OAuthAttributes attributes, int tryNum) {
-        if (tryNum == 5)
-            return "ROLE_GUEST";
-        try {
-            registerDAO.registerOAuth(new RegisterDTO("id_" + UUID.randomUUID().toString(),
-                    "user_" + UUID.randomUUID().toString(), attributes.getEmail()));
-            return "ROLE_USER_CERT";
-        } catch (Exception e) {
-            e.printStackTrace();
-            return tryRegister(attributes, tryNum++);
-        }
 
     }
 }
