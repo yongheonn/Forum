@@ -4,12 +4,17 @@ import { Navigate, useNavigate } from 'react-router-dom';
 import '../styles/App.css';
 import { useTranslation } from 'react-i18next';
 import ModalPopup from '../Components/ModalPopup';
-import { AjaxPostOption } from '../Modules/api_option';
+import { AjaxGetOption, AjaxPostOption } from '../Modules/api_option';
 import { apiUrl } from '../Modules/api_url';
 
 const Form = styled.form`
   color: #000000 !important;
 `;
+
+const Google = styled.button`
+  color: #000000 !important;
+`;
+
 type UserData = {
   id: string;
   nick: string;
@@ -19,6 +24,7 @@ type UserData = {
 
 const LoginForm = () => {
   const url = apiUrl + '/ajax/login/';
+  const url2 = apiUrl + '/oauth2/authorization/google';
   const { t } = useTranslation();
 
   const [values, setValues] = useState({
@@ -38,6 +44,16 @@ const LoginForm = () => {
   const option: AjaxPostOption = {
     method: 'POST',
     body: JSON.stringify(values),
+    credentials: 'include',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: '',
+    },
+  };
+
+  const option2: AjaxGetOption = {
+    method: 'GET',
     credentials: 'include',
     headers: {
       Accept: 'application/json',
@@ -66,6 +82,19 @@ const LoginForm = () => {
     } else {
       return t('msg_error');
     }
+  };
+
+  const getOAuth = async () => {
+    const response = await fetch(url2, option2);
+    if (response.status === 200) {
+      console.log('테스트 성공');
+    }
+  };
+
+  const handleClick = () => {
+    getOAuth()
+      .then(() => null)
+      .catch(() => null);
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -103,6 +132,7 @@ const LoginForm = () => {
           <span>{t('login_submit')}</span>
         </button>
       </Form>
+      <Google onClick={handleClick}>google</Google>
     </Fragment>
   );
 };
