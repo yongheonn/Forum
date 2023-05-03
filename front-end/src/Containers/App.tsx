@@ -10,6 +10,7 @@ import { VerifyAuthLink } from './WaitEmailAuth';
 import { Main } from './Main';
 import { SetLangDefault } from './LangSetting';
 import BottomPanel from './BottomPanel';
+import { OAuthLogin, OAuthLoginError } from './Login';
 
 if (process.env.REACT_APP_ENV === 'production') {
   console.log = () => null;
@@ -71,6 +72,8 @@ const App: React.FC = () => {
             <Routes>
               <Route path="/*" element={<Main />} />
               <Route path="/setting/*" element={<Setting />} />
+              <Route path="/auth/oauth/redirect" element={<OAuthLogin />} />
+              <Route path="/auth/oauth/redirect/error" element={<OAuthLoginError />} />
               <Route path="/auth/email/*" element={<VerifyAuthLink />} />
             </Routes>
           </AppContext.Provider>

@@ -424,6 +424,21 @@ const RegisterForm = ({ setOnEmailAuth }: { setOnEmailAuth: React.Dispatch<React
     },
   };
 
+  const Google = styled.img`
+    width: 177px;
+    height: 43px;
+  `;
+
+  const Naver = styled.img`
+    width: 177px;
+    height: 43px;
+  `;
+
+  const Kakao = styled.img`
+    width: 177px;
+    height: 43px;
+  `;
+
   const register = async () => {
     const response = await fetch(url, option);
     if (response.status === 200) {
@@ -483,6 +498,15 @@ const RegisterForm = ({ setOnEmailAuth }: { setOnEmailAuth: React.Dispatch<React
           <span>{t('register_submit')}</span>
         </button>
       </Form>
+      <a href={apiUrl + '/oauth2/authorization/google'}>
+        <Google src="/img/oauth-google.png" />
+      </a>
+      <a href={apiUrl + '/oauth2/authorization/naver'}>
+        <Naver src="/img/oauth-naver.png" />
+      </a>
+      <a href={apiUrl + '/oauth2/authorization/kakao'}>
+        <Kakao src="/img/oauth-kakao.png" />
+      </a>
     </Fragment>
   );
 };

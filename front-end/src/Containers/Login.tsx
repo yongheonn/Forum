@@ -1,6 +1,6 @@
 import React, { Dispatch, ErrorInfo, Fragment, SetStateAction, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate, useSearchParams } from 'react-router-dom';
 import '../styles/App.css';
 import { useTranslation } from 'react-i18next';
 import ModalPopup from '../Components/ModalPopup';
@@ -11,8 +11,19 @@ const Form = styled.form`
   color: #000000 !important;
 `;
 
-const Google = styled.button`
-  color: #000000 !important;
+const Google = styled.img`
+  width: 177px;
+  height: 43px;
+`;
+
+const Naver = styled.img`
+  width: 177px;
+  height: 43px;
+`;
+
+const Kakao = styled.img`
+  width: 177px;
+  height: 43px;
 `;
 
 type UserData = {
@@ -22,9 +33,62 @@ type UserData = {
   auth: number;
 };
 
+const OAuthLogin = () => {
+  const url = apiUrl + '/ajax/login/oauth';
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const option: AjaxGetOption = {
+    method: 'GET',
+    credentials: 'include',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: '',
+    },
+  };
+
+  const getLoginInfo = async () => {
+    const accessToken = searchParams.get('access_token');
+    if (accessToken !== null) localStorage.setItem('access_token', accessToken);
+    if (accessToken) option.headers.Authorization = accessToken;
+    const response = await fetch(url, option);
+    if (response.status === 200) {
+      const data: UserData = (await response.json()) as UserData;
+      localStorage.setItem('id', data.id);
+      localStorage.setItem('nick', data.nick);
+      localStorage.setItem('email', data.email);
+      let auth = '';
+      if (data.auth === 0) auth = 'ROLE_GUEST';
+      else if (data.auth === 1) auth = 'ROLE_USER_NONCERT';
+      else if (data.auth === 2) auth = 'ROLE_USER_CERT';
+      else if (data.auth === 3) auth = 'ROLE_ADMIN';
+      localStorage.setItem('auth', auth);
+    } else if (response.status === 404) {
+      alert('오류가 발생했습니다');
+    } else {
+      alert('오류가 발생했습니다');
+    }
+
+    window.location.replace('/');
+  };
+  useEffect(() => {
+    getLoginInfo()
+      .then(() => null)
+      .catch(() => null);
+  }, []);
+  return <Fragment />;
+};
+
+const OAuthLoginError = () => {
+  useEffect(() => {
+    alert('오류가 발생했습니다');
+    window.location.replace('/');
+  }, []);
+  return <Fragment />;
+};
+
 const LoginForm = () => {
   const url = apiUrl + '/ajax/login/';
-  const url2 = apiUrl + '/oauth2/authorization/google';
   const { t } = useTranslation();
 
   const [values, setValues] = useState({
@@ -44,16 +108,6 @@ const LoginForm = () => {
   const option: AjaxPostOption = {
     method: 'POST',
     body: JSON.stringify(values),
-    credentials: 'include',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-      Authorization: '',
-    },
-  };
-
-  const option2: AjaxGetOption = {
-    method: 'GET',
     credentials: 'include',
     headers: {
       Accept: 'application/json',
@@ -82,19 +136,6 @@ const LoginForm = () => {
     } else {
       return t('msg_error');
     }
-  };
-
-  const getOAuth = async () => {
-    const response = await fetch(url2, option2);
-    if (response.status === 200) {
-      console.log('테스트 성공');
-    }
-  };
-
-  const handleClick = () => {
-    getOAuth()
-      .then(() => null)
-      .catch(() => null);
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -132,7 +173,15 @@ const LoginForm = () => {
           <span>{t('login_submit')}</span>
         </button>
       </Form>
-      <Google onClick={handleClick}>google</Google>
+      <a href={apiUrl + '/oauth2/authorization/google'}>
+        <Google src="/img/oauth-google.png" />
+      </a>
+      <a href={apiUrl + '/oauth2/authorization/naver'}>
+        <Naver src="/img/oauth-naver.png" />
+      </a>
+      <a href={apiUrl + '/oauth2/authorization/kakao'}>
+        <Kakao src="/img/oauth-kakao.png" />
+      </a>
     </Fragment>
   );
 };
@@ -149,4 +198,4 @@ const Login = ({ setModalState }: { setModalState: React.Dispatch<React.SetState
   );
 };
 
-export default Login;
+export { Login, OAuthLogin, OAuthLoginError };
