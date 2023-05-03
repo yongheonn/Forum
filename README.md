@@ -15,11 +15,13 @@ https://yongheonn.com
 
 - java
 - Spring Boot
+- Spring Secure
 - Redis
 - Mysql
 - MyBatis
 - smtp mail
 - JWT
+- OAuth 2.0
 
 
 ### Cloud
