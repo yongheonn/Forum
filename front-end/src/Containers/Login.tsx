@@ -1,4 +1,4 @@
-import React, { Dispatch, ErrorInfo, Fragment, SetStateAction, useEffect, useState } from 'react';
+import React, { Dispatch, ErrorInfo, Fragment, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useSearchParams } from 'react-router-dom';
 import '../styles/App.css';
