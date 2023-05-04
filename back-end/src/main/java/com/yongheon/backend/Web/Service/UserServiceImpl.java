@@ -142,27 +142,21 @@ public class UserServiceImpl implements UserService {
         String ip = request.getHeader("X-Forwarded-For");
         if (ip != null) {
             ip = ip.split(",")[0];
-            log.info("X-Forwarded-For ip: {}", ip);
         }
         if (ip == null) {
             ip = request.getHeader("Proxy-Client-IP");
-            log.info("Proxy-Client-IP ip: {}", ip);
         }
         if (ip == null) {
             ip = request.getHeader("WL-Proxy-Client-IP"); // 웹로직
-            log.info("WL-Proxy-Client-IP ip: {}", ip);
         }
         if (ip == null) {
             ip = request.getHeader("HTTP_CLIENT_IP");
-            log.info("HTTP_CLIENT_IP ip: {}", ip);
         }
         if (ip == null) {
             ip = request.getHeader("HTTP_X_FORWARDED_FOR");
-            log.info("HTTP_X_FORWARDED_FOR ip: {}", ip);
         }
         if (ip == null) {
             ip = request.getRemoteAddr();
-            log.info("getRemoteAddr ip: {}", ip);
         }
         return ip;
     }

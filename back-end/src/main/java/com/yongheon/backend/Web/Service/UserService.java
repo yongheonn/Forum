@@ -1,5 +1,7 @@
 package com.yongheon.backend.Web.Service;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.ibatis.javassist.NotFoundException;
 
 import com.yongheon.backend.Web.DTO.UserDTO;
@@ -20,4 +22,6 @@ public interface UserService {
     public void sendVerificationMail(String email, String id) throws NotFoundException;
 
     public void verifyEmail(String id, String key) throws NotFoundException;
+
+    public String getUserIp(HttpServletRequest request);
 }
