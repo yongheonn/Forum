@@ -39,6 +39,10 @@ public class BoardController {
     @PostMapping("/create")
     public ResponseEntity<?> regiBoard(@AuthenticationPrincipal String id, @RequestBody BoardDTO boardDTO) {
         try {
+            String auth = SecurityContextHolder.getContext().getAuthentication()
+                    .getAuthorities().toArray()[0].toString();
+            if (!auth.equals("ROLE_ADMIN") && !auth.equals("ROLE_USER_CERT"))
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
             boardDTO.setUser_id(id);
             String nick = userService.getNick(id);
             boardDTO.setWriter(nick);
