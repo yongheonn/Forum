@@ -18,7 +18,6 @@ import org.springframework.stereotype.Service;
 import com.yongheon.backend.Security.OAuthAttributes;
 import com.yongheon.backend.Web.DAO.RegisterDAO;
 import com.yongheon.backend.Web.DAO.UserDAO;
-import com.yongheon.backend.Web.DTO.RegisterDTO;
 import com.yongheon.backend.Web.DTO.UserDTO;
 
 @Service
