@@ -149,7 +149,7 @@ const PwForm = ({
       <h3>
         <label htmlFor="pw">{t('register_pw')}</label>
       </h3>
-      <input type="text" name="pw" maxLength={20} placeholder={t('register_pw_holder')} onChange={changeHandler} />
+      <input type="password" name="pw" maxLength={20} placeholder={t('register_pw_holder')} onChange={changeHandler} />
       <span aria-live="assertive">{msg}</span>
     </Fragment>
   );
@@ -203,7 +203,7 @@ const PwReForm = ({
       <h3>
         <label htmlFor="pwRe">비밀번호 재입력</label>
       </h3>
-      <input type="text" name="pwRe" maxLength={20} placeholder="비밀번호 재입력" onChange={changeHandler} />
+      <input type="password" name="pwRe" maxLength={20} placeholder="비밀번호 재입력" onChange={changeHandler} />
       <span aria-live="assertive">{msg}</span>
     </Fragment>
   );
