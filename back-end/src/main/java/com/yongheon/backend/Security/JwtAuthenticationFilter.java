@@ -19,6 +19,8 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.yongheon.backend.Web.Service.UserService;
+
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -26,12 +28,17 @@ import lombok.extern.slf4j.Slf4j;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Inject
-    JwtTokenProvider jwtTokenProvider;
+    private JwtTokenProvider jwtTokenProvider;
+
+    @Inject
+    private UserService userService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
         try {
+            String ip = userService.getUserIp(request);
+            log.info("connected user ip: {}", ip);
             String accessToken = request.getHeader("Authorization");
             JwtTokenProvider.TokenStatus tokenStatus = jwtTokenProvider.validateAccessToken(accessToken);
 

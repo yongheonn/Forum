@@ -3,6 +3,7 @@ package com.yongheon.backend.Web.Service;
 import java.util.UUID;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,6 +14,9 @@ import org.springframework.stereotype.Service;
 import com.yongheon.backend.Web.DAO.UserDAO;
 import com.yongheon.backend.Web.DTO.UserDTO;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service
 public class UserServiceImpl implements UserService {
     @Inject
@@ -118,8 +122,9 @@ public class UserServiceImpl implements UserService {
             redisUtil.setDataExpire(id + uuid.toString(), email, 60 * 30L);
             // 인증 링크 전송
             sendMail(email, "계정 인증메일입니다.", VERIFICATION_LINK + id + '/' + uuid.toString());
+            log.info("이메일 발송 성공");
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("send mail error", e);
         }
     }
 
@@ -130,6 +135,36 @@ public class UserServiceImpl implements UserService {
             throw new NotFoundException("유효하지 않은 링크입니다.");
         dao.verifyUser(id);
         redisUtil.deleteData(id + key);
+    }
+
+    @Override
+    public String getUserIp(HttpServletRequest request) {
+        String ip = request.getHeader("X-Forwarded-For");
+        if (ip != null) {
+            ip = ip.split(",")[0];
+            log.info("X-Forwarded-For ip: {}", ip);
+        }
+        if (ip == null) {
+            ip = request.getHeader("Proxy-Client-IP");
+            log.info("Proxy-Client-IP ip: {}", ip);
+        }
+        if (ip == null) {
+            ip = request.getHeader("WL-Proxy-Client-IP"); // 웹로직
+            log.info("WL-Proxy-Client-IP ip: {}", ip);
+        }
+        if (ip == null) {
+            ip = request.getHeader("HTTP_CLIENT_IP");
+            log.info("HTTP_CLIENT_IP ip: {}", ip);
+        }
+        if (ip == null) {
+            ip = request.getHeader("HTTP_X_FORWARDED_FOR");
+            log.info("HTTP_X_FORWARDED_FOR ip: {}", ip);
+        }
+        if (ip == null) {
+            ip = request.getRemoteAddr();
+            log.info("getRemoteAddr ip: {}", ip);
+        }
+        return ip;
     }
 
 }

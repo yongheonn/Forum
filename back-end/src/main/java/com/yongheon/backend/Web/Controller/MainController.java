@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.google.gson.GsonBuilder;
 import com.yongheon.backend.Web.Service.UserService;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @RestController
 @RequestMapping(value = "/ajax/account/*")
 public class MainController {

@@ -33,6 +33,7 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
     private final RegisterDAO registerDAO;
     private final LoginDAO loginDAO;
     private final JwtTokenProvider jwtTokenProvider;
+    private final UserService userService;
 
     @Value("${front-url}")
     private String frontUrl;
@@ -63,32 +64,7 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
                         "ROLE_GUEST");
                 String url = frontUrl + "/auth/oauth/redirect?access_token=" + accessToken;
 
-                String ip = request.getHeader("X-Forwarded-For");
-
-                if (ip != null) {
-                    ip = ip.split(",")[0];
-                    System.out.println("X-Forwarded-For ip: " + ip);
-                }
-                if (ip == null) {
-                    ip = request.getHeader("Proxy-Client-IP");
-                    System.out.println("Proxy-Client-IP ip: " + ip);
-                }
-                if (ip == null) {
-                    ip = request.getHeader("WL-Proxy-Client-IP"); // 웹로직
-                    System.out.println("WL-Proxy-Client-IP ip: " + ip);
-                }
-                if (ip == null) {
-                    ip = request.getHeader("HTTP_CLIENT_IP");
-                    System.out.println("HTTP_CLIENT_IP ip: " + ip);
-                }
-                if (ip == null) {
-                    ip = request.getHeader("HTTP_X_FORWARDED_FOR");
-                    System.out.println("HTTP_X_FORWARDED_FOR ip: " + ip);
-                }
-                if (ip == null) {
-                    ip = request.getRemoteAddr();
-                    System.out.println("getRemoteAddr ip: " + ip);
-                }
+                String ip = userService.getUserIp(request);
 
                 String refreshToken = jwtTokenProvider.generateRefreshToken(id, ip);
 

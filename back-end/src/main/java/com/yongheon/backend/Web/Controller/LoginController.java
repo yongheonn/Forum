@@ -25,6 +25,9 @@ import com.yongheon.backend.Web.Service.LoginService;
 import com.yongheon.backend.Web.Service.UserService;
 import com.yongheon.backend.Web.Service.LoginService.Status;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @RestController
 @RequestMapping(value = "/ajax/login/*")
 public class LoginController {
@@ -58,32 +61,7 @@ public class LoginController {
 			String accessToken = jwtTokenProvider.generateAccessToken(data.getId(), auth);
 			response.setHeader("Authorization", accessToken);
 
-			String ip = request.getHeader("X-Forwarded-For");
-
-			if (ip != null) {
-				ip = ip.split(",")[0];
-				System.out.println("X-Forwarded-For ip: " + ip);
-			}
-			if (ip == null) {
-				ip = request.getHeader("Proxy-Client-IP");
-				System.out.println("Proxy-Client-IP ip: " + ip);
-			}
-			if (ip == null) {
-				ip = request.getHeader("WL-Proxy-Client-IP"); // 웹로직
-				System.out.println("WL-Proxy-Client-IP ip: " + ip);
-			}
-			if (ip == null) {
-				ip = request.getHeader("HTTP_CLIENT_IP");
-				System.out.println("HTTP_CLIENT_IP ip: " + ip);
-			}
-			if (ip == null) {
-				ip = request.getHeader("HTTP_X_FORWARDED_FOR");
-				System.out.println("HTTP_X_FORWARDED_FOR ip: " + ip);
-			}
-			if (ip == null) {
-				ip = request.getRemoteAddr();
-				System.out.println("getRemoteAddr ip: " + ip);
-			}
+			String ip = userService.getUserIp(request);
 
 			String refreshToken = jwtTokenProvider.generateRefreshToken(data.getId(), ip);
 

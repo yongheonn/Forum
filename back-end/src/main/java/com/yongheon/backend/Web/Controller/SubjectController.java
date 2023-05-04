@@ -19,6 +19,9 @@ import com.google.gson.GsonBuilder;
 import com.yongheon.backend.Web.DTO.SubjectDTO;
 import com.yongheon.backend.Web.Service.SubjectService;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @RestController
 @RequestMapping(value = "/ajax/subject/*")
 public class SubjectController {
@@ -30,7 +33,7 @@ public class SubjectController {
         try {
             String auth = SecurityContextHolder.getContext().getAuthentication()
                     .getAuthorities().toArray()[0].toString();
-            System.out.println("주제: " + subject);
+            log.info("주제: {}" + subject);
             if (!auth.equals("ROLE_ADMIN")) // 관리자 권한이 있거나 본인 아이디가 아닌 관리자를 부여한 경우가 아닐 때
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 
@@ -77,7 +80,7 @@ public class SubjectController {
                                                                                                     // 경우가 아닐 때
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             subjectService.updateSubject(subject);
-            System.out.println("업데이트 주제: " + subject);
+            log.info("업데이트 주제: {}", subject);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();

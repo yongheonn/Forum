@@ -21,6 +21,9 @@ import com.yongheon.backend.Web.Service.RecommendService;
 import com.yongheon.backend.Web.Service.SubjectService;
 import com.yongheon.backend.Web.Service.UserService;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @RestController
 @RequestMapping(value = "/ajax/board/*")
 public class BoardController {
@@ -174,7 +177,6 @@ public class BoardController {
 
             RecommendDTO recommendDTO = new RecommendDTO(bno, id);
             Boolean isDuplicate = recommendService.checkDuplicate(recommendDTO);
-            System.out.println(isDuplicate);
             if (isDuplicate)
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             recommendService.setRecommend(recommendDTO);
