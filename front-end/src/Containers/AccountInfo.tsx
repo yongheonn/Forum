@@ -192,9 +192,9 @@ const AccountInfo = () => {
       setEmail(email);
 
       if (auth === 'ROLE_GUEST') setAuth('게스트 계정');
-      else if ('ROLE_USER_NONCERT') setAuth('이메일 인증 안된 계정');
-      else if ('ROLE_USER_CERT') setAuth('이메일 인증 완료된 계정');
-      else if ('ROLE_ADMIN') setAuth('관리자 계정');
+      else if (auth === 'ROLE_USER_NONCERT') setAuth('이메일 인증 안된 계정');
+      else if (auth === 'ROLE_USER_CERT') setAuth('이메일 인증 완료된 계정');
+      else if (auth === 'ROLE_ADMIN') setAuth('관리자 계정');
     }
   }, []);
 
