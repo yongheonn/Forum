@@ -88,7 +88,7 @@ const OAuthLoginError = () => {
 };
 
 const LoginForm = () => {
-  const url = apiUrl + '/ajax/login/';
+  const url = apiUrl + '/ajax/login';
   const { t } = useTranslation();
 
   const [values, setValues] = useState({
