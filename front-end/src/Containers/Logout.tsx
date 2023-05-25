@@ -1,6 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { LiButton } from '../Components/LiButton';
+import { LiButton } from '../Components/Button';
 import { AjaxPostOption } from '../Modules/api_option';
 import { apiUrl } from '../Modules/api_url';
 

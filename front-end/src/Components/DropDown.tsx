@@ -12,7 +12,7 @@ import React, {
   useState,
 } from 'react';
 import styled from 'styled-components';
-import { Button } from './LiButton';
+import { Button } from './Button';
 import outsideClick from './OutsideClick';
 
 const Li = styled.li`

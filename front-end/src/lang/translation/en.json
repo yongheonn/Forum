@@ -23,5 +23,6 @@
   "register_pw_holder": "Input pw",
   "register_submit": "Register",
   "msg_error": "An error occurred",
-  "subject": "Subject"
+  "subject": "Subject",
+  "setting_account": "account"
 }

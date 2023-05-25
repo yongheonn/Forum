@@ -4,6 +4,7 @@ import { Link, NavLink, Outlet, Route, Routes, useLocation, useParams } from 're
 import styled from 'styled-components';
 import '../styles/App.css';
 import { LangSetting } from './LangSetting';
+import { AccountInfo } from './AccountInfo';
 
 const SettingPanel = styled.div`
   display: flex;
@@ -44,6 +45,7 @@ const Setting: React.FC = () => {
     const path = location.pathname;
     if (path.search(/lang/) !== -1) setSelected(0);
     else if (path.search(/etc/) !== -1) setSelected(1);
+    else if (path.search(/account/) !== -1) setSelected(2);
   }, []);
 
   return (
@@ -56,11 +58,15 @@ const Setting: React.FC = () => {
         <TabItem selected={selected === 1} onClick={() => clickHandler(1)} to={'/setting/etc'}>
           {t('setting_etc')}
         </TabItem>
+        <TabItem selected={selected === 2} onClick={() => clickHandler(2)} to={'/setting/account'}>
+          {t('setting_account')}
+        </TabItem>
       </Tab>
       <div>
         <Routes>
           <Route path={'lang'} element={<LangSetting />} />
           <Route path={'etc'} element={<span>기타</span>} />
+          <Route path={'account'} element={<AccountInfo />} />
         </Routes>
       </div>
     </SettingPanel>

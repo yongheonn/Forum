@@ -23,5 +23,6 @@
   "register_pw_holder": "비밀번호 입력",
   "register_submit": "회원가입",
   "msg_error": "오류가 발생했습니다.",
-  "subject": "주제"
+  "subject": "주제",
+  "setting_account": "계정"
 }

@@ -7,21 +7,33 @@ import { HorizontalPanel } from '../Components/Panel';
 import AccountMenu from './AccountMenu';
 
 const NavBar = styled(HorizontalPanel)`
-  a:link {
-    color: #ffffff;
-    text-decoration: none;
-  }
-  a:visited {
-    color: #ffffff;
-    text-decoration: none;
-  }
   color: #ffffff;
   background-color: #3d414d;
-  padding: 7px;
+  padding: 7px 20px 7px 20px;
+  font-size: 20px;
 `;
 
 const HomeLink = styled(Link)`
   margin-right: auto;
+  &:link {
+    color: #ffffff;
+    text-decoration: none;
+  }
+  &:visited {
+    color: #ffffff;
+    text-decoration: none;
+  }
+`;
+
+const SettingLink = styled(Link)`
+  &:link {
+    color: #ffffff;
+    text-decoration: none;
+  }
+  &:visited {
+    color: #ffffff;
+    text-decoration: none;
+  }
 `;
 
 const TopPannel = () => {
@@ -33,10 +45,10 @@ const TopPannel = () => {
   return (
     <NavBar>
       <HomeLink to={'/'}> Home </HomeLink>
-      <Link to={'/setting/lang'}>
+      <SettingLink to={'/setting/lang'}>
         <AiOutlineSetting />
         {t('setting')}
-      </Link>
+      </SettingLink>
       <AccountMenu />
     </NavBar>
   );
