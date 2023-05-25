@@ -18,6 +18,8 @@ public interface UserDAO {
 
     public String getNick(String id);
 
+    public void setNick(UserDTO userDTO);
+
     public UserDTO isRegistered(String email);
 
     public boolean setAuth(int auth);

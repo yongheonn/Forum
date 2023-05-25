@@ -54,23 +54,27 @@ public class RegisterServiceImpl implements RegisterService {
         return dao.isExistEmail(email) != null;
     }
 
-    private Boolean isValidId(String id) throws Exception {
+    @Override
+    public Boolean isValidId(String id) throws Exception {
         if (!idRegExp(id))
             return false;
         return !isExistId(id);
     }
 
-    private Boolean isValidPw(String pw) throws Exception {
+    @Override
+    public Boolean isValidPw(String pw) throws Exception {
         return pwRegExp(pw);
     }
 
-    private Boolean isValidNick(String nick) throws Exception {
+    @Override
+    public Boolean isValidNick(String nick) throws Exception {
         if (!nickRegExp(nick))
             return false;
         return !isExistNick(nick);
     }
 
-    private Boolean isValidEmail(String email) throws Exception {
+    @Override
+    public Boolean isValidEmail(String email) throws Exception {
         if (!emailRegExp(email))
             return false;
         return !isExistEmail(email);

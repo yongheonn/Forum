@@ -15,6 +15,8 @@ public interface UserService {
 
     public String getNick(String id);
 
+    public boolean setNick(UserDTO userDTO);
+
     public boolean setAuth(String auth);
 
     public void sendMail(String to, String sub, String text);

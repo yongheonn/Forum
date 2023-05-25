@@ -11,6 +11,14 @@ public interface RegisterService {
 
     public Boolean emailRegExp(String email) throws Exception;
 
+    public Boolean isValidId(String id) throws Exception;
+
+    public Boolean isValidPw(String id) throws Exception;
+
+    public Boolean isValidNick(String id) throws Exception;
+
+    public Boolean isValidEmail(String id) throws Exception;
+
     public Boolean isExistId(String id) throws Exception;
 
     public Boolean isExistNick(String nick) throws Exception;

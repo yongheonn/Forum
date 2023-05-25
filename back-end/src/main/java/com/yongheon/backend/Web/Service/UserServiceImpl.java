@@ -28,6 +28,9 @@ public class UserServiceImpl implements UserService {
     @Inject
     private JavaMailSender emailSender;
 
+    @Inject
+    private RegisterService registerService;
+
     @Value("${front-url}")
     private String front_url;
 
@@ -79,6 +82,20 @@ public class UserServiceImpl implements UserService {
         } catch (Exception e) {
             e.printStackTrace();
             return null;
+        }
+    }
+
+    @Override
+    public boolean setNick(UserDTO userDTO) {
+        try {
+            if (registerService.isValidNick(userDTO.getNick())) {
+                dao.setNick(userDTO);
+                return true;
+            }
+            return false;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
         }
     }
 
