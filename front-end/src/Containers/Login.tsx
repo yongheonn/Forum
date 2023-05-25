@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import ModalPopup from '../Components/ModalPopup';
 import { AjaxGetOption, AjaxPostOption } from '../Modules/api_option';
 import { apiUrl } from '../Modules/api_url';
+import { Button } from '../Components/Button';
 
 const Form = styled.form`
   color: #000000 !important;
@@ -88,7 +89,7 @@ const OAuthLoginError = () => {
 };
 
 const LoginForm = () => {
-  const url = apiUrl + '/ajax/login';
+  const url = apiUrl + '/ajax/login/';
   const { t } = useTranslation();
 
   const [values, setValues] = useState({
@@ -169,10 +170,11 @@ const LoginForm = () => {
         </span>
         <br />
         <br />
-        <button type="submit">
+        <Button type="submit">
           <span>{t('login_submit')}</span>
-        </button>
+        </Button>
       </Form>
+      <br />
       <a href={apiUrl + '/oauth2/authorization/google'}>
         <Google src="/img/oauth-google.png" />
       </a>

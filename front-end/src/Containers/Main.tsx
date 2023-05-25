@@ -52,6 +52,9 @@ const DescSpan = styled.span`
 `;
 
 const SubjectBox = styled(VerticalPanel)`
+  &:hover {
+    background: #66b2ff;
+  }
   border-size: 1px;
   border-style: solid;
   border-color: #ddd;
@@ -65,6 +68,7 @@ const SubjectLink = styled(Link)`
     color: #bbbbbb;
   }
   text-decoration: none;
+  padding: 10px;
 `;
 
 // admin 권한이 있을시 subject 생성 메뉴 보이게 만들 예정
@@ -88,6 +92,9 @@ const WriteLink = styled(Link)`
   }
   &:visited {
     color: #000000;
+  }
+  &:hover {
+    background: #66b2ff;
   }
   text-decoration: none;
   border-width: 1px;

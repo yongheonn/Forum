@@ -44,6 +44,9 @@ const BoardLink = styled(Link)`
   &:visited {
     color: #bbbbbb;
   }
+  &:hover {
+    background: #66b2ff;
+  }
   text-decoration: none;
 `;
 
@@ -97,10 +100,19 @@ const SubjectLink = styled(Link)`
   &:link {
     color: #000000;
   }
+
   &:visited {
     color: #000000;
   }
+  &:hover {
+    color: #66b2ff;
+  }
   text-decoration: none;
+  font-weight: bold;
+  background: #eeeeee;
+  padding: 15px;
+  flex-grow: 1;
+  font-size: 20px;
 `;
 
 const SubjectInfo = ({ subject }: { subject: SubjectT }) => {
@@ -167,6 +179,9 @@ const WriteLink = styled(Link)`
   }
   &:visited {
     color: #000000;
+  }
+  &:hover {
+    background: #66b2ff;
   }
   text-decoration: none;
   border-width: 1px;

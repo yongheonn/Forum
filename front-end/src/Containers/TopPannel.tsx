@@ -23,6 +23,10 @@ const HomeLink = styled(Link)`
     color: #ffffff;
     text-decoration: none;
   }
+  &:hover {
+    color: black;
+    background: #ffffff;
+  }
 `;
 
 const SettingLink = styled(Link)`
@@ -33,6 +37,10 @@ const SettingLink = styled(Link)`
   &:visited {
     color: #ffffff;
     text-decoration: none;
+  }
+  &:hover {
+    color: black;
+    background: #ffffff;
   }
 `;
 

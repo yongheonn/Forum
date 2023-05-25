@@ -9,14 +9,23 @@ import Register from './Register';
 import { DropDown, Ul, Li } from '../Components/DropDown';
 import Logout from './Logout';
 import { refreshAccessToken } from './RefreshToken';
-import { LinkButton } from '../Components/Button';
+import { LinkLiButton } from '../Components/Button';
+import { HorizontalPanel } from '../Components/Panel';
 
 const LoginDiv = styled.div`
   padding: 0px 4px;
+  &:hover {
+    color: black;
+    background: #ffffff;
+  }
 `;
 
 const RigsterDiv = styled.div`
   padding: 0px 4px;
+  &:hover {
+    color: black;
+    background: #ffffff;
+  }
 `;
 
 const GuestDiv = styled.div`
@@ -24,9 +33,46 @@ const GuestDiv = styled.div`
   flexdirection: row;
 `;
 
-const AccountSetting = styled(LinkButton)`
+const Profile = styled(HorizontalPanel)`
+  border-bottom-size: 1px;
+  border-bottom-style: solid;
+  border-bottom-color: #dddddd;
+  padding-bottom: 10px;
+  .icon {
+    color: white;
+    display: block;
+  }
+`;
+
+const ProfileNick = styled.span`
+  flex-grow: 1;
+  font-weight: bold
+  color: black;
+  padding-left: 20px;
+`;
+
+const AccountSetting = styled(LinkLiButton)`
   text-decoration: none;
   color: black;
+`;
+
+const MemberDiv = styled.div`
+  .icon {
+    color: white;
+    display: block;
+    &:link {
+      color: #ffffff;
+      text-decoration: none;
+    }
+    &:visited {
+      color: #ffffff;
+      text-decoration: none;
+    }
+    &:hover {
+      color: black;
+      background: #ffffff;
+    }
+  }
 `;
 
 const GuestMenu = () => {
@@ -60,18 +106,35 @@ const GuestMenu = () => {
 
 const MemberMenu = () => {
   const { t } = useTranslation();
+  const [nick, setNick] = useState('');
+
+  useEffect(() => {
+    const nick = localStorage.getItem('nick');
+
+    if (nick) {
+      setNick(nick);
+    }
+  }, []);
 
   return (
-    <DropDown element={<AiOutlineUser color={'white'} size={'30px'} />}>
-      <Ul>
-        <Li>
-          <Logout />
-        </Li>
-        <Li>
-          <AccountSetting to={'/setting/account'}>{t('setting_account')}</AccountSetting>
-        </Li>
-      </Ul>
-    </DropDown>
+    <MemberDiv>
+      <DropDown element={<AiOutlineUser className="icon" size={'27px'} />}>
+        <Ul>
+          <Li>
+            <Profile>
+              <AiOutlineUser className="icon" size={'27px'} />
+              <ProfileNick>{nick}</ProfileNick>
+            </Profile>
+          </Li>
+          <Li>
+            <AccountSetting to={'/setting/account'}>{t('setting_account')}</AccountSetting>
+          </Li>
+          <Li>
+            <Logout />
+          </Li>
+        </Ul>
+      </DropDown>
+    </MemberDiv>
   );
 };
 

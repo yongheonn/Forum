@@ -11,6 +11,7 @@ import { refreshAccessToken } from './RefreshToken';
 import { UpdateBoard } from './WriteBoard';
 import { apiUrl } from '../Modules/api_url';
 import { MainContext } from './Main';
+import { Button, LinkButton } from '../Components/Button';
 
 type BoardT = {
   bno: number; // 게시물 번호
@@ -120,6 +121,14 @@ const RecommendPanel = styled(HorizontalPanel)`
   margin: auto;
 `;
 
+const RecommendButton = styled(Button)`
+  width: auto;
+  background: #eeeeee;
+  border-width: 1px;
+  border-color: #bbbbbb;
+  border-style: solid;
+`;
+
 const Recommend = ({ recommend }: { recommend: number }) => {
   const url = apiUrl + '/ajax/board/recommend';
   const { bno } = useParams();
@@ -163,19 +172,13 @@ const Recommend = ({ recommend }: { recommend: number }) => {
   return (
     <Fragment>
       <RecommendPanel>
-        <button onClick={handleClick}>{'추천 ' + recommendNum.toString()}</button>
+        <RecommendButton onClick={handleClick}>{'추천 ' + recommendNum.toString()}</RecommendButton>
       </RecommendPanel>
     </Fragment>
   );
 };
 
-const UpdateLink = styled(Link)`
-  &:link {
-    color: #000000;
-  }
-  &:visited {
-    color: #000000;
-  }
+const UpdateLink = styled(LinkButton)`
   background-color: #f0f0f0;
   text-decoration: none;
   border-width: 1px;
@@ -187,7 +190,7 @@ const UpdateLink = styled(Link)`
   float: right;
 `;
 
-const DeleteButton = styled.button`
+const DeleteButton = styled(Button)`
   text-decoration: none;
   border-width: 1px;
   border-style: solid;

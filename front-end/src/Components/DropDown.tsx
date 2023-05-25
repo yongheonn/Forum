@@ -41,11 +41,9 @@ const ListContainer = styled.div`
   display: block;
 `;
 
-const Background = styled.div`
-  position: fixed;
-  width: 100%;
-  height: 100%;
-
+const DropdownButton = styled(Button)`
+  background: #00ff0000;
+  border-width: 0px;
   }
 `;
 
@@ -84,7 +82,7 @@ const DropDown = ({ element, children }: ChartProps) => {
 
   return (
     <div ref={wrapperRef}>
-      <Button onClick={clickButton}>{element}</Button>
+      <DropdownButton onClick={clickButton}>{element}</DropdownButton>
       {state ? (
         <ListContainer ref={containerRef} style={{ right: x.toString() + 'px' }}>
           {children}
