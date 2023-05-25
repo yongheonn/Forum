@@ -8,7 +8,6 @@ import { Login } from './Login';
 import Register from './Register';
 import { DropDown, Ul, Li } from '../Components/DropDown';
 import Logout from './Logout';
-import { refreshAccessToken } from './RefreshToken';
 import { LinkLiButton } from '../Components/Button';
 import { HorizontalPanel } from '../Components/Panel';
 
