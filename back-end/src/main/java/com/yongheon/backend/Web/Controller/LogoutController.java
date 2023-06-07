@@ -3,10 +3,13 @@ package com.yongheon.backend.Web.Controller;
 import java.io.IOException;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,7 +25,7 @@ public class LogoutController {
     private String api_url;
 
     @PostMapping(value = "/")
-    public void login(HttpServletResponse response) throws IOException {
+    public ResponseEntity<?> logout(HttpServletRequest request, HttpServletResponse response) throws IOException {
         try {
             ResponseCookie cookie = ResponseCookie.from("refreshToken", null)
                     .path("/ajax/auth/refresh")
@@ -34,9 +37,10 @@ public class LogoutController {
                     .build();
 
             response.addHeader("Set-Cookie", cookie.toString());
+            return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

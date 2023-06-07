@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.google.gson.GsonBuilder;
 import com.yongheon.backend.Security.JwtTokenProvider;
 import com.yongheon.backend.Web.DTO.LoginDTO;
+import com.yongheon.backend.Web.DTO.UserDTO;
 import com.yongheon.backend.Web.Service.LoginService;
 import com.yongheon.backend.Web.Service.UserService;
 import com.yongheon.backend.Web.Service.LoginService.Status;
@@ -81,6 +82,42 @@ public class LoginController {
 			e.printStackTrace();
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
+	}
+
+	@GetMapping(value = "/guest")
+	public ResponseEntity<?> guestLogin(HttpServletRequest request,
+			HttpServletResponse response) throws IOException {
+		try {
+			String auth = "ROLE_ADMIN";
+			String accessToken = jwtTokenProvider.generateAccessToken("guest", auth);
+
+			response.setHeader("Authorization", accessToken);
+			String ip = userService.getUserIp(request);
+
+			String refreshToken = jwtTokenProvider.generateRefreshToken("guest", ip);
+			ResponseCookie cookie = ResponseCookie.from("refreshToken", refreshToken)
+					.path("/ajax/auth/refresh")
+					.sameSite("None")
+					.domain("yongheonn.com")
+					.httpOnly(true)
+					.secure(true)
+					.maxAge(8200000)
+					.build();
+
+			UserDTO userDTO = new UserDTO();
+			userDTO.setAuth(3);
+			userDTO.setEmail("guest@guest.guest");
+			userDTO.setId("guest");
+			userDTO.setNick("guest");
+
+			response.addHeader("Set-Cookie", cookie.toString());
+			String jsonData = new GsonBuilder().serializeNulls().create().toJson(userDTO);
+			return new ResponseEntity<>(jsonData, HttpStatus.OK);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+
 	}
 
 	@GetMapping(value = "/oauth")

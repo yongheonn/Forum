@@ -38,6 +38,8 @@ public class AccountController {
     @PostMapping(value = "/update")
     public ResponseEntity<?> updateAccount(@AuthenticationPrincipal String id, @RequestBody UserDTO userDTO) {
         try {
+            if (id.equals("guest"))
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             userDTO.setId(id);
             if (userService.setNick(userDTO))
                 return new ResponseEntity<>(HttpStatus.OK);
