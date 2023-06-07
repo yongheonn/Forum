@@ -11,6 +11,7 @@ import { Main } from './Main';
 import { SetLangDefault } from './LangSetting';
 import BottomPanel from './BottomPanel';
 import { OAuthLogin, OAuthLoginError } from './Login';
+import { Notice } from './Notice';
 
 if (process.env.REACT_APP_ENV === 'production') {
   console.log = () => null;
@@ -62,6 +63,7 @@ const App: React.FC = () => {
 
   return (
     <Fragment>
+      <Notice isClick={false} />
       <TopPannel />
       <MainPanel>
         <MainArticle onClick={handleClick}>

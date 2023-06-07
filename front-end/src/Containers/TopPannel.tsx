@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
 import { AiOutlineSetting } from 'react-icons/ai';
 import { Link } from 'react-router-dom';
 import { HorizontalPanel } from '../Components/Panel';
 import AccountMenu from './AccountMenu';
+import { Notice } from './Notice';
 
 const NavBar = styled(HorizontalPanel)`
   color: #ffffff;
@@ -29,6 +30,16 @@ const HomeLink = styled(Link)`
   }
 `;
 
+const NoticeDiv = styled.div`
+  margin: 0 auto;
+  padding: 0px 4px;
+  cursor: pointer;
+  &:hover {
+    color: black;
+    background: #ffffff;
+  }
+`;
+
 const SettingLink = styled(Link)`
   &:link {
     color: #ffffff;
@@ -46,13 +57,22 @@ const SettingLink = styled(Link)`
 
 const TopPannel = () => {
   const { t } = useTranslation();
+  const [noticeClick, setNoticeClick] = useState(false);
   const temp = () => {
     alert('');
+  };
+
+  const clickhandler = () => {
+    setNoticeClick(true);
   };
 
   return (
     <NavBar>
       <HomeLink to={'/'}> Home </HomeLink>
+      <NoticeDiv onClick={clickhandler}>
+        공지사항
+        {noticeClick ? <Notice isClick={true} /> : null}
+      </NoticeDiv>
       <SettingLink to={'/setting/lang'}>
         <AiOutlineSetting />
         {t('setting')}

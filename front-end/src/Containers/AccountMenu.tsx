@@ -13,6 +13,7 @@ import { HorizontalPanel } from '../Components/Panel';
 
 const LoginDiv = styled.div`
   padding: 0px 4px;
+  cursor: pointer;
   &:hover {
     color: black;
     background: #ffffff;
@@ -21,6 +22,7 @@ const LoginDiv = styled.div`
 
 const RigsterDiv = styled.div`
   padding: 0px 4px;
+  cursor: pointer;
   &:hover {
     color: black;
     background: #ffffff;
@@ -91,10 +93,10 @@ const GuestMenu = () => {
   // eslint-disable-next-line class-methods-use-this
   return (
     <GuestDiv>
-      <LoginDiv onClick={clickLogin} style={{ cursor: 'pointer' }}>
+      <LoginDiv onClick={clickLogin}>
         <span>{t('login')}</span>
       </LoginDiv>
-      <RigsterDiv onClick={clickRegister} style={{ cursor: 'pointer' }}>
+      <RigsterDiv onClick={clickRegister}>
         <span>{t('register')}</span>
       </RigsterDiv>
       {isLoginClick ? <Login setModalState={setLoginClick} /> : null}
