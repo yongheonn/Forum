@@ -3,7 +3,6 @@ import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import '../styles/App.css';
 import { AiOutlineUser } from 'react-icons/ai';
-import { Link } from 'react-router-dom';
 import { Login } from './Login';
 import Register from './Register';
 import { DropDown, Ul, Li } from '../Components/DropDown';
