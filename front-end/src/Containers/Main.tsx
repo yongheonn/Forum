@@ -42,12 +42,12 @@ const AdminSpan = styled.span`
 
 const DescSpan = styled.span`
   justify-content: center;
+  display: block;
   color: black;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   align-items: center;
-  width: 250px;
   font-size: 16px;
 `;
 

@@ -21,6 +21,8 @@ const Logout = () => {
   };
 
   const requestLogout = async () => {
+    const accessToken = localStorage.getItem('access_token');
+    if (accessToken) option.headers.Authorization = accessToken;
     const response = await fetch(url, option);
     if (response.status === 200) {
       localStorage.removeItem('access_token');

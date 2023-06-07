@@ -212,6 +212,8 @@ const AccountInfo = () => {
             <NickInput type="text" maxLength={20} value={nickInput} onChange={nickChangeHandler} />
             <span>
               닉네임 변경이 가능합니다. 5~20자의 영문 대소문자, 숫자, 한글과 특수기호(_),(-)만 사용 가능합니다.
+              <br />
+              게스트 계정은 닉네임 변경이 불가능합니다.
             </span>
           </VerticalPanel>
         </NickPanel>

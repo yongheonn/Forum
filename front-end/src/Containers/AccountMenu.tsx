@@ -141,7 +141,7 @@ const AccountMenu = () => {
   const [isLogin, setIsLogin] = useState(false);
 
   useEffect(() => {
-    setIsLogin(localStorage.getItem('access_token') !== null);
+    setIsLogin(localStorage.getItem('id') !== null);
   }, []);
 
   return isLogin ? <MemberMenu /> : <GuestMenu />;

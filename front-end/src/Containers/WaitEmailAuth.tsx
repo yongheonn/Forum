@@ -71,7 +71,6 @@ const LoadAuthState = () => {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       window.location.href = '/';
     }
-    console.log('test');
   };
 
   useInterval(() => {

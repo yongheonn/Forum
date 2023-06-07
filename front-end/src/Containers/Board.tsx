@@ -146,9 +146,12 @@ const Recommend = ({ recommend }: { recommend: number }) => {
   };
 
   const handleClick = () => {
-    setRecommend()
-      .then(() => null)
-      .catch(() => null);
+    if (localStorage.getItem('id') === 'guest') alert('게스트 계정은 단일 계정이므로 추천이 불가능합니다.');
+    else {
+      setRecommend()
+        .then(() => null)
+        .catch(() => null);
+    }
   };
 
   const setRecommend = async () => {

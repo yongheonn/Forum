@@ -131,14 +131,12 @@ const CreateBoard = ({ sid }: { sid: string }) => {
         .catch(() => null);
     } else if (response.status === 400) {
       alert('잘못된 요청');
-    } else if (response.status === 401) {
-      alert('권한 없음');
     }
   };
 
   useEffect(() => {
     if (!localStorage.getItem('access_token')) {
-      alert('권한이 없습니다. 로그인해주세요.');
+      alert('권한이 없습니다. 로그인해주세요. (로그인 항목에서 게스트 로그인)');
       navigate('../');
     }
   }, []);
@@ -183,8 +181,6 @@ const UpdateBoard = ({ board, bno }: { board: BoardT; bno: string }) => {
         .catch(() => null);
     } else if (response.status === 400) {
       alert('잘못된 요청');
-    } else if (response.status === 401) {
-      alert('권한 없음');
     }
   };
 
