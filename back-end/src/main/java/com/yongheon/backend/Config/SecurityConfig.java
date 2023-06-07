@@ -63,7 +63,7 @@ public class SecurityConfig {
                         "/ajax/subject/all", "/ajax/subject/get")
 
                 .permitAll()
-                .anyRequest()
+                .antMatchers("/ajax/**")
                 .authenticated()
                 .and()
                 .oauth2Login()

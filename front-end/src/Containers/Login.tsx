@@ -144,7 +144,39 @@ const LoginForm = () => {
     guestLogin()
       .then(() => null)
       .catch(() => null);
-    window.location.replace('/');
+  };
+
+  const guestUrl = apiUrl + '/ajax/login/guest';
+
+  const guestOption: AjaxGetOption = {
+    method: 'GET',
+    credentials: 'include',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: '',
+    },
+  };
+
+  const guestLogin = async () => {
+    const response = await fetch(guestUrl, guestOption);
+    if (response.status === 200) {
+      const data: UserData = (await response.json()) as UserData;
+      const accessToken = response.headers.get('Authorization');
+      if (accessToken !== null) localStorage.setItem('access_token', accessToken);
+      localStorage.setItem('id', data.id);
+      localStorage.setItem('nick', data.nick);
+      localStorage.setItem('email', data.email);
+      let auth = '';
+      if (data.auth === 0) auth = 'ROLE_GUEST';
+      else if (data.auth === 1) auth = 'ROLE_USER_NONCERT';
+      else if (data.auth === 2) auth = 'ROLE_USER_CERT';
+      else if (data.auth === 3) auth = 'ROLE_ADMIN';
+      localStorage.setItem('auth', auth);
+      window.location.replace('/');
+    } else {
+      alert('게스트 로그인에 오류가 발생했습니다.');
+    }
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -211,35 +243,5 @@ const Login = ({ setModalState }: { setModalState: React.Dispatch<React.SetState
     </ModalPopup>
   );
 };
-const guestUrl = apiUrl + '/ajax/login/guest';
 
-const guestOption: AjaxGetOption = {
-  method: 'GET',
-  credentials: 'include',
-  headers: {
-    Accept: 'application/json',
-    'Content-Type': 'application/json',
-    Authorization: '',
-  },
-};
-
-const guestLogin = async () => {
-  const response = await fetch(guestUrl, guestOption);
-  if (response.status === 200) {
-    const data: UserData = (await response.json()) as UserData;
-    const accessToken = response.headers.get('Authorization');
-    if (accessToken !== null) localStorage.setItem('access_token', accessToken);
-    localStorage.setItem('id', data.id);
-    localStorage.setItem('nick', data.nick);
-    localStorage.setItem('email', data.email);
-    let auth = '';
-    if (data.auth === 0) auth = 'ROLE_GUEST';
-    else if (data.auth === 1) auth = 'ROLE_USER_NONCERT';
-    else if (data.auth === 2) auth = 'ROLE_USER_CERT';
-    else if (data.auth === 3) auth = 'ROLE_ADMIN';
-    localStorage.setItem('auth', auth);
-  } else {
-    alert('게스트 로그인에 오류가 발생했습니다.');
-  }
-};
-export { Login, OAuthLogin, OAuthLoginError, guestLogin };
+export { Login, OAuthLogin, OAuthLoginError };
