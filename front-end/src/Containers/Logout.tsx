@@ -11,7 +11,7 @@ const Logout = () => {
 
   const option: AjaxPostOption = {
     method: 'POST',
-    body: JSON.stringify(1),
+    body: '',
     credentials: 'include',
     headers: {
       Accept: 'application/json',
@@ -21,8 +21,6 @@ const Logout = () => {
   };
 
   const requestLogout = async () => {
-    const accessToken = localStorage.getItem('access_token');
-    if (accessToken) option.headers.Authorization = accessToken;
     const response = await fetch(url, option);
     if (response.status === 200) {
       localStorage.removeItem('access_token');
