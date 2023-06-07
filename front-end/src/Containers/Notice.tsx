@@ -43,42 +43,16 @@ const GuestLoginNotice = () => {
   );
 };
 
-const Notice = ({ isClick }: { isClick: boolean }) => {
-  const [modalState, setModalState] = useState(false);
-
+const Notice = ({ setModalState }: { setModalState: React.Dispatch<React.SetStateAction<boolean>> }) => {
   const clickHandler = () => {
     setModalState(false);
   };
 
-  const checkExp = () => {
-    const noticeDate = localStorage.getItem('notice');
-    const now = new Date();
-    if (noticeDate !== null) {
-      if (now.getTime() > parseInt(noticeDate, 10)) {
-        setModalState(true);
-        localStorage.setItem('notice', (now.getTime() + 24 * 60 * 60 * 1000).toString());
-      }
-    } else {
-      setModalState(true);
-      localStorage.setItem('notice', (now.getTime() + 24 * 60 * 60 * 1000).toString());
-    }
-  };
-
-  useEffect(() => {
-    if (!isClick) {
-      checkExp();
-    } else {
-      setModalState(true);
-    }
-  }, []);
-
   return (
     <Fragment>
-      {modalState ? (
-        <ModalPopup _handleModal={() => clickHandler()}>
-          <GuestLoginNotice />
-        </ModalPopup>
-      ) : null}
+      <ModalPopup _handleModal={() => clickHandler()}>
+        <GuestLoginNotice />
+      </ModalPopup>
     </Fragment>
   );
 };

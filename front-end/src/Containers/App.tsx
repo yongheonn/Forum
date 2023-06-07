@@ -48,6 +48,23 @@ const App: React.FC = () => {
   }
 
   const [ele, setEle] = useState<HTMLInputElement | null>(null);
+  const [noticeClick, setNoticeClick] = useState(false);
+
+  const checkNoticeExp = () => {
+    const noticeDate = localStorage.getItem('notice');
+    const now = new Date();
+    if (noticeDate !== null) {
+      if (now.getTime() > parseInt(noticeDate, 10)) {
+        alert('test1');
+        setNoticeClick(true);
+        localStorage.setItem('notice', (now.getTime() + 24 * 60 * 60 * 1000).toString());
+      }
+    } else {
+      alert('test2');
+      setNoticeClick(true);
+      localStorage.setItem('notice', (now.getTime() + 24 * 60 * 60 * 1000).toString());
+    }
+  };
 
   const handleClick = () => {
     console.log(ele);
@@ -59,11 +76,12 @@ const App: React.FC = () => {
 
   useEffect(() => {
     SetLangDefault();
+    checkNoticeExp();
   }, []);
 
   return (
     <Fragment>
-      <Notice isClick={false} />
+      {noticeClick ? <Notice setModalState={setNoticeClick} /> : null}
       <TopPannel />
       <MainPanel>
         <MainArticle onClick={handleClick}>

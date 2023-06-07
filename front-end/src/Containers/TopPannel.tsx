@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { Fragment, useState } from 'react';
 import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
 import { AiOutlineSetting } from 'react-icons/ai';
@@ -67,18 +67,18 @@ const TopPannel = () => {
   };
 
   return (
-    <NavBar>
-      <HomeLink to={'/'}> Home </HomeLink>
-      <NoticeDiv onClick={clickhandler}>
-        공지사항
-        {noticeClick ? <Notice isClick={true} /> : null}
-      </NoticeDiv>
-      <SettingLink to={'/setting/lang'}>
-        <AiOutlineSetting />
-        {t('setting')}
-      </SettingLink>
-      <AccountMenu />
-    </NavBar>
+    <Fragment>
+      <NavBar>
+        <HomeLink to={'/'}> Home </HomeLink>
+        <NoticeDiv onClick={clickhandler}>공지사항</NoticeDiv>
+        <SettingLink to={'/setting/lang'}>
+          <AiOutlineSetting />
+          {t('setting')}
+        </SettingLink>
+        <AccountMenu />
+      </NavBar>
+      {noticeClick ? <Notice setModalState={setNoticeClick} /> : null}
+    </Fragment>
   );
 };
 

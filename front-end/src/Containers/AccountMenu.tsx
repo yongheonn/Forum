@@ -90,7 +90,6 @@ const GuestMenu = () => {
     setRegisterClick(true);
   };
 
-  // eslint-disable-next-line class-methods-use-this
   return (
     <GuestDiv>
       <LoginDiv onClick={clickLogin}>
