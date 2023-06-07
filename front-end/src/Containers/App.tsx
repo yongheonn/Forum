@@ -55,12 +55,10 @@ const App: React.FC = () => {
     const now = new Date();
     if (noticeDate !== null) {
       if (now.getTime() > parseInt(noticeDate, 10)) {
-        alert('test1');
         setNoticeClick(true);
         localStorage.setItem('notice', (now.getTime() + 24 * 60 * 60 * 1000).toString());
       }
     } else {
-      alert('test2');
       setNoticeClick(true);
       localStorage.setItem('notice', (now.getTime() + 24 * 60 * 60 * 1000).toString());
     }
