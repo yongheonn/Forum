@@ -2,6 +2,7 @@ import React, { Dispatch, Fragment, SetStateAction, createContext, useEffect, us
 import { useTranslation } from 'react-i18next';
 import { Link, Route, Routes } from 'react-router-dom';
 import styled from 'styled-components';
+import { t } from 'i18next';
 import { HorizontalPanel, VerticalPanel } from '../Components/Panel';
 import { AjaxGetOption } from '../Modules/api_option';
 import { refreshAccessToken } from './RefreshToken';
@@ -112,7 +113,7 @@ const SubjectFooter = styled(HorizontalPanel)`
 
 const SubjectList = () => {
   const url = apiUrl + '/ajax/subject/all';
-
+  const { t } = useTranslation();
   const option: AjaxGetOption = {
     method: 'GET',
     credentials: 'include',
@@ -155,7 +156,7 @@ const SubjectList = () => {
         ))}
         {localStorage.getItem('auth') === 'ROLE_ADMIN' ? (
           <SubjectFooter>
-            <WriteLink to={'/create'}>주제 생성</WriteLink>
+            <WriteLink to={'/create'}>{t('create_subject')}</WriteLink>
           </SubjectFooter>
         ) : null}
       </VerticalPanel>

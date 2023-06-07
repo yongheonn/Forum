@@ -24,5 +24,15 @@
   "register_submit": "회원가입",
   "msg_error": "오류가 발생했습니다.",
   "subject": "주제",
-  "setting_account": "계정"
+  "setting_account": "계정",
+  "notice": "공지사항",
+  "write": "글쓰기",
+  "edit": "수정",
+  "delete": "삭제",
+  "create_subject": "주제 생성",
+  "edit_subject": "주제 수정",
+  "recommend": "추천",
+  "view": "조회수",
+  "write_date": "작성일",
+  "edit_date": "수정일"
 }

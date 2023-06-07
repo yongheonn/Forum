@@ -58,9 +58,6 @@ const SettingLink = styled(Link)`
 const TopPannel = () => {
   const { t } = useTranslation();
   const [noticeClick, setNoticeClick] = useState(false);
-  const temp = () => {
-    alert('');
-  };
 
   const clickhandler = () => {
     setNoticeClick(true);
@@ -70,7 +67,7 @@ const TopPannel = () => {
     <Fragment>
       <NavBar>
         <HomeLink to={'/'}> Home </HomeLink>
-        <NoticeDiv onClick={clickhandler}>공지사항</NoticeDiv>
+        <NoticeDiv onClick={clickhandler}>{t('notice')}</NoticeDiv>
         <SettingLink to={'/setting/lang'}>
           <AiOutlineSetting />
           {t('setting')}

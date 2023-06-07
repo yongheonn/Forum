@@ -2,6 +2,7 @@ import React, { ChangeEvent, Fragment, useContext, useEffect, useRef, useState }
 import { AiFillLock } from 'react-icons/ai';
 import { Route, Routes, useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
+import { useTranslation } from 'react-i18next';
 import { HorizontalPanel, VerticalPanel } from '../Components/Panel';
 import { AjaxGetOption, AjaxPostOption } from '../Modules/api_option';
 import { AppContext } from './App';
@@ -83,7 +84,7 @@ const Separator = styled.span`
 `;
 
 const Header = ({ board }: { board: BoardT }) => {
-  const { bno } = useParams();
+  const { t } = useTranslation();
   return (
     <Fragment>
       <HeaderPanel>
@@ -95,16 +96,16 @@ const Header = ({ board }: { board: BoardT }) => {
           <InfoLeftPanel>
             <span>{board.writer}</span>
             <Separator>{'|'}</Separator>
-            <span>{'작성일 ' + board.reg_date}</span>
+            <span>{t('write_date') + ' ' + board.reg_date}</span>
             {board.update_date !== null ? (
               <Fragment>
                 <Separator>{'|'}</Separator>
-                <span>{'수정일 ' + board.update_date}</span>
+                <span>{t('edit_date') + ' ' + board.update_date}</span>
               </Fragment>
             ) : null}
           </InfoLeftPanel>
           <InfoRightPanel>
-            <span>{'조회수 ' + board.view.toString()}</span>
+            <span>{t('view') + ' ' + board.view.toString()}</span>
           </InfoRightPanel>
         </HorizontalPanel>
       </HeaderPanel>
@@ -132,6 +133,7 @@ const RecommendButton = styled(Button)`
 const Recommend = ({ recommend }: { recommend: number }) => {
   const url = apiUrl + '/ajax/board/recommend';
   const { bno } = useParams();
+  const { t } = useTranslation();
   const [recommendNum, setRecommendNum] = useState<number>(recommend);
 
   const option: AjaxPostOption = {
@@ -175,7 +177,7 @@ const Recommend = ({ recommend }: { recommend: number }) => {
   return (
     <Fragment>
       <RecommendPanel>
-        <RecommendButton onClick={handleClick}>{'추천 ' + recommendNum.toString()}</RecommendButton>
+        <RecommendButton onClick={handleClick}>{t('recommend') + ' ' + recommendNum.toString()}</RecommendButton>
       </RecommendPanel>
     </Fragment>
   );
@@ -211,8 +213,7 @@ const MainText = ({
   board: BoardT;
   setDeleteClick: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
-  const { bno } = useParams();
-
+  const { t } = useTranslation();
   const clickDelete = () => {
     setDeleteClick(true);
   };
@@ -222,9 +223,9 @@ const MainText = ({
         <MainTextPanel dangerouslySetInnerHTML={{ __html: board.content }} />
         <Recommend recommend={board.recommend} />
         <HorizontalPanel>
-          {board.user_id === 'id' ? <UpdateLink to={'update'}>수정</UpdateLink> : null}
+          {board.user_id === 'id' ? <UpdateLink to={'update'}>{t('edit')}</UpdateLink> : null}
           {board.user_id === 'id' || localStorage.getItem('auth') === 'ROLE_ADMIN' ? (
-            <DeleteButton onClick={clickDelete}>삭제</DeleteButton>
+            <DeleteButton onClick={clickDelete}>{t('delete')}</DeleteButton>
           ) : null}
         </HorizontalPanel>
       </VerticalPanel>

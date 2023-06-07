@@ -116,12 +116,12 @@ const SubjectLink = styled(Link)`
 `;
 
 const SubjectInfo = ({ subject }: { subject: SubjectT }) => {
-  const a = 1;
+  const { t } = useTranslation();
 
   return (
     <Fragment>
       <SubjectInfoPanel>
-        <SubjectLink to={'/board/' + subject.id}>{subject.title + ' 주제'}</SubjectLink>
+        <SubjectLink to={'/board/' + subject.id}>{subject.title + ' ' + t('subject')}</SubjectLink>
       </SubjectInfoPanel>
     </Fragment>
   );
@@ -199,7 +199,7 @@ const BoardFooter = styled(HorizontalPanel)`
 
 const BoardList = ({ subject, page }: { subject: SubjectT; page: string }) => {
   const urlBase = apiUrl + '/ajax/board/list';
-
+  const { t } = useTranslation();
   const option: AjaxGetOption = {
     method: 'GET',
     credentials: 'include',
@@ -256,9 +256,9 @@ const BoardList = ({ subject, page }: { subject: SubjectT; page: string }) => {
           </BoardLink>
         ))}
         <BoardFooter>
-          <WriteLink to={'/board/' + subject.id + '/create'}>글쓰기</WriteLink>
+          <WriteLink to={'/board/' + subject.id + '/create'}>{t('write')}</WriteLink>
           {localStorage.getItem('id') === subject.id || localStorage.getItem('auth') === 'ROLE_ADMIN' ? (
-            <WriteLink to={'/board/' + subject.id + '/update'}>주제 수정</WriteLink>
+            <WriteLink to={'/board/' + subject.id + '/update'}>{t('edit_subject')}</WriteLink>
           ) : null}
         </BoardFooter>
       </VerticalPanel>

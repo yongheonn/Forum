@@ -24,5 +24,15 @@
   "register_submit": "Register",
   "msg_error": "An error occurred",
   "subject": "Subject",
-  "setting_account": "account"
+  "setting_account": "account",
+  "notice": "Notice",
+  "write": "write",
+  "edit": "edit",
+  "delete": "delete",
+  "create_subject": "create subject",
+  "edit_subject": "edit subject",
+  "recommend": "recommend",
+  "view": "views",
+  "write_date": "writed",
+  "edit_date": "edited"
 }
