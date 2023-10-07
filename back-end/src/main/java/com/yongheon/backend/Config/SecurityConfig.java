@@ -81,7 +81,7 @@ public class SecurityConfig {
         configuration.addAllowedMethod("*");
         configuration.addAllowedHeader("*");
         configuration.addExposedHeader("*");
-        // configuration.setAllowedMethods(Arrays.asList("HEAD", "GET", "POST",
+        // // configuration.setAllowedMethods(Arrays.asList("HEAD", "GET", "POST",
         // "OPTIONS", "PATCH"));
         // configuration.setAllowedHeaders(Arrays.asList("Authorization", "Accept",
         // "Content-Type"));
