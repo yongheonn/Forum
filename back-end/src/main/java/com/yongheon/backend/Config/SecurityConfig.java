@@ -57,7 +57,7 @@ public class SecurityConfig {
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeRequests()
                 .antMatchers(
-                        "/ajax/login/", "/ajax/login/guest", "/ajax/register/**", "/ajax/auth/refresh",
+                        "/ajax/health/", "/ajax/login/", "/ajax/login/guest", "/ajax/register/**", "/ajax/auth/refresh",
                         "/ajax/logout/**",
                         "/ajax/auth/email/verify/**", "/ajax/board/read", "/ajax/board/read-secret", "/ajax/board/list",
                         "/ajax/subject/all", "/ajax/subject/get")

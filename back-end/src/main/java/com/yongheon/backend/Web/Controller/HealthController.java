@@ -10,8 +10,8 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestController
-@RequestMapping(value = "/")
-public class MainController {
+@RequestMapping(value = "/ajax/health/*")
+public class HealthController {
 
     @GetMapping(value = "/")
     public ResponseEntity<?> checkHealthStatus() {
