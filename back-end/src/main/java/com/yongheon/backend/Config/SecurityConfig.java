@@ -77,7 +77,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.addAllowedOrigin(front_url);
+        configuration.addAllowedOriginPattern("*");
         configuration.setAllowedMethods(Arrays.asList("HEAD", "GET", "POST", "OPTIONS", "PATCH"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Accept", "Content-Type"));
         configuration.addExposedHeader("Authorization"); // 관련 헤더만 응답 헤더에 노출
