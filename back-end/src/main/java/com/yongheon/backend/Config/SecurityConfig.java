@@ -73,13 +73,14 @@ public class SecurityConfig {
         return http.build();
     }
 
+    // cors 관련 설정
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.addAllowedOrigin(front_url);
         configuration.setAllowedMethods(Arrays.asList("HEAD", "GET", "POST", "OPTIONS", "PATCH"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Accept", "Content-Type"));
-        configuration.addExposedHeader("Authorization");
+        configuration.addExposedHeader("Authorization"); // 관련 헤더만 응답 헤더에 노출
         configuration.setAllowCredentials(true);
         configuration.setMaxAge(3600L);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
